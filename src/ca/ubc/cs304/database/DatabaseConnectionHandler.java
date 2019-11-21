@@ -1,12 +1,12 @@
 package ca.ubc.cs304.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
+
 
 import ca.ubc.cs304.model.BranchModel;
 
@@ -27,6 +27,33 @@ public class DatabaseConnectionHandler {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+	}
+
+	public void initializeDatabase() throws SQLException, IOException {
+		BufferedReader reader = null;
+		Statement stmt;
+		try {
+			stmt = connection.createStatement();
+			reader = new BufferedReader(new FileReader("create_tables.sql"));
+			StringBuilder b = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				b.append(line);
+			}
+			String[] statements = b.toString().split(";");
+			for (String statement: statements) {
+				if (statement.trim().isEmpty()) {
+					continue;
+				}
+				stmt.execute(statement);
+			}
+		} catch (Exception e) {
+				e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
 		}
 	}
 	
@@ -89,16 +116,16 @@ public class DatabaseConnectionHandler {
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM branch");
 		
-//    		// get info on ResultSet
-//    		ResultSetMetaData rsmd = rs.getMetaData();
-//
-//    		System.out.println(" ");
-//
-//    		// display column names;
-//    		for (int i = 0; i < rsmd.getColumnCount(); i++) {
-//    			// get column name and print it
-//    			System.out.printf("%-15s", rsmd.getColumnName(i + 1));
-//    		}
+    		// get info on ResultSet
+    		ResultSetMetaData rsmd = rs.getMetaData();
+
+    		System.out.println(" ");
+
+    		// display column names;
+    		for (int i = 0; i < rsmd.getColumnCount(); i++) {
+    			// get column name and print it
+    			System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+    		}
 			
 			while(rs.next()) {
 				BranchModel model = new BranchModel(rs.getString("branch_addr"),

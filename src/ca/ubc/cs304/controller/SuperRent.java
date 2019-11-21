@@ -10,15 +10,15 @@ import ca.ubc.cs304.ui.TerminalTransactions;
 /**
  * This is the main controller class that will orchestrate everything.
  */
-public class Bank implements LoginWindowDelegate, TerminalTransactionsDelegate {
+public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDelegate {
 	private DatabaseConnectionHandler dbHandler = null;
 	private LoginWindow loginWindow = null;
 
-	public Bank() {
+	public SuperRent() {
 		dbHandler = new DatabaseConnectionHandler();
 	}
 	
-	private void start() {
+	private void init() {
 		loginWindow = new LoginWindow();
 		loginWindow.showFrame(this);
 	}
@@ -123,7 +123,7 @@ public class Bank implements LoginWindowDelegate, TerminalTransactionsDelegate {
 	 * Main method called at launch time
 	 */
 	public static void main(String args[]) {
-		Bank bank = new Bank();
-		bank.start();
+		SuperRent SuperRent = new SuperRent();
+		SuperRent.init();
 	}
 }
