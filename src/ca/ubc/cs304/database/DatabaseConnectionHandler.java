@@ -6,9 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 import ca.ubc.cs304.model.BranchModel;
+import ca.ubc.cs304.model.CustomerModel;
+import ca.ubc.cs304.model.VehicleModel;
 
 /**
  * This class handles all database related transactions
@@ -62,6 +65,31 @@ public class DatabaseConnectionHandler {
 			if (connection != null) {
 				connection.close();
 			}
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+		}
+	}
+
+	public boolean login(String username, String password) {
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+
+			connection = DriverManager.getConnection(ORACLE_URL, username, password);
+			connection.setAutoCommit(false);
+
+			System.out.println("\nConnected to Oracle!");
+			return true;
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			return false;
+		}
+	}
+
+	private void rollbackConnection() {
+		try  {
+			connection.rollback();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
@@ -164,29 +192,122 @@ public class DatabaseConnectionHandler {
 			rollbackConnection();
 		}	
 	}
-	
-	public boolean login(String username, String password) {
+
+
+	public void insertCustomer(CustomerModel model) {
 		try {
-			if (connection != null) {
-				connection.close();
-			}
-	
-			connection = DriverManager.getConnection(ORACLE_URL, username, password);
-			connection.setAutoCommit(false);
-	
-			System.out.println("\nConnected to Oracle!");
-			return true;
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO branch VALUES (?,?,?,?,?)");
+			ps.setInt(1, model.getDlicense());
+			ps.setString(2, model.getName());
+			ps.setString(3, model.getAddress());
+			ps.setInt(4, model.getPhonenumber());
+
+			ps.executeUpdate();
+			connection.commit();
+			ps.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			return false;
+			rollbackConnection();
 		}
 	}
 
-	private void rollbackConnection() {
-		try  {
-			connection.rollback();	
+	public void deleteCustomer(int dLicense) {
+		try {
+			PreparedStatement ps = connection.prepareStatement("DELETE FROM customer WHERE dLicense = ?");
+			ps.setInt(1, dLicense);
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Customer with license " + dLicense + " does not exist!");
+			}
+			connection.commit();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
+
+	public void updateCustomerInfo() {
+		return;
+	}
+
+	public VehicleModel[] viewAvailableVehicles(String vtname, String location) {
+		ArrayList<VehicleModel> result = new ArrayList<VehicleModel>();
+		try {
+			List array = new ArrayList();
+			if (vtname != null) {
+				array.add("v.vtname = " + vtname);
+			}
+			if (location != null) {
+				array.add("v.location = " + location);
+			}
+			String condition_str = String.join(" AND ", array);
+			String result_str = "SELECT * " +
+									"FROM Vehicle v, VehicleType vt " +
+									"WHERE " + condition_str + " AND v.status = 'available' " +
+									"AND v.vtname = vt.vtname";
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM branch");
+			while(rs.next()) {
+				// TODO: replace with VehicleModel
+//				VehicleModel model = new VehicleModel(rs.getString("branch_addr"),
+//						rs.getString("branch_city"),
+//						rs.getInt("branch_id"),
+//						rs.getString("branch_name"),
+//						rs.getInt("branch_phone"));
+//				result.add(model);
+			}
+
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 		}
+		return null;
+	}
+
+	public void createReservation() {
+		return;
+	}
+
+	public void updateVehicleStatus(String status, int vlicense) {
+		try {
+			PreparedStatement ps = connection.prepareStatement("UPDATE Vehicle SET status = ? WHERE vlicense = ?");
+			ps.setString(1, status);
+			ps.setInt(2, vlicense);
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0) {
+				System.out.println(WARNING_TAG + " Vehicle " + vlicense + " does not exist!");
+			}
+			connection.commit();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+			rollbackConnection();
+		}
+	}
+
+	public void processRental() {
+		return;
+	}
+
+	public void processReturn() {
+		return;
+	}
+
+	public void generateRentalReport() {
+		return;
+	}
+
+	public void generateRentalReport(String location, String city) {
+		return;
+	}
+
+	public void generateReturnReport() {
+		return;
+	}
+
+	public void generateReturnReport(String location, String city) {
+		return;
 	}
 }

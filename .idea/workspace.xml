@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="added sql script">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/CustomerModel.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentReturnModel.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalReportModel.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReservationModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReturnReportModel.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/VehicleModel.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/VehicleTypeModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/controller/Bank.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/database/DatabaseConnectionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/database/DatabaseConnectionHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/LoginWindowDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/LoginWindowDelegate.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/TerminalTransactionsDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/TerminalTransactionsDelegate.class" afterDir="false" />
@@ -22,6 +19,7 @@
       <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/TerminalTransactions.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/TerminalTransactions.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create_tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -133,7 +131,7 @@
       <option name="presentableId" value="Default" />
       <updated>1574158164814</updated>
       <workItem from="1574158171979" duration="2232000" />
-      <workItem from="1574212242161" duration="22880000" />
+      <workItem from="1574212242161" duration="37235000" />
     </task>
     <task id="LOCAL-00001" summary="added sql script">
       <created>1574366855453</created>
@@ -142,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574366855453</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="modified the create table sql script">
+      <created>1574400731633</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1574400731633</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,19 +166,20 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added sql script" />
-    <option name="LAST_COMMIT_MESSAGE" value="added sql script" />
+    <MESSAGE value="modified the create table sql script" />
+    <option name="LAST_COMMIT_MESSAGE" value="modified the create table sql script" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>119</line>
+          <line>147</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>112</line>
+          <line>140</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

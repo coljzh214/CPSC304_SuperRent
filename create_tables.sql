@@ -19,7 +19,7 @@ create table VehicleType (
 );
 
 create table Vehicle (
-    vlicense varchar(10) PRIMARY KEY,
+    vlicense int PRIMARY KEY,
     vid int,
     make varchar(15),
     model varchar(20),
@@ -52,7 +52,7 @@ create table Reservation (
 
 create table Rental (
     rid int PRIMARY KEY,
-    vlicense varchar(10),
+    vlicense int,
     dlicense int,
     confNo int,
     fromDate date,
@@ -75,3 +75,20 @@ create table RentReturn (
     fullTank char(1),
     foreign key (rid) references Rental(rid)
 );
+
+commit;
+
+insert into Customer values (1729328, "Raymond Ng", "696 Ontario St.", 5671123);
+insert into Customer values (1729311, "Raymond Nog", "69 Ontario St.", 5671124);
+insert into Customer values (1123328, "Raymond Ng", "696 Ontario St.", 5671123);
+insert into Customer values (0981726, "Jessica Wong", "66-993 Ontar St.", 5671123);
+
+insert into Vehicle values (133313333, 1, "Honda", "Civic", 2006, "Economy", "Blundell and No. 3", "Richmond");
+insert into Vehicle values (244424444, 2, "Nissan", "Murano", 2016, "SUV", "Waterfront", "Vancouver");
+insert into Vehicle values (453423129, 3, "Nissan", "Murano", 2013, "SUV", "Waterfront", "Vancouver");
+insert into Vehicle values (888888888, 4, "Ford", "Mustang", 2003, "Mid-size", "Lougheed", "Coquitlam");
+
+insert into VehicleType values ("Economy", "", 6, 3, 1, 14, 11, 8, 18);
+insert into VehicleType values ("SUV", "", 9, 7, 4, 19, 16, 9, 25);
+insert into VehicleType values ("Mid-size", "", 20, 15, 10, 30, 25, 22, 40);
+insert into VehicleType values ("Truck", "", 7, 6, 5, 9, 8, 7, 12);
