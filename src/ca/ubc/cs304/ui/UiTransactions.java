@@ -74,6 +74,11 @@ public class UiTransactions extends JFrame implements ActionListener {
 		this.addComboBox(tab2, " Vehicle Type: ", vehicleType, gb2, c2);
 		this.addFormattedField(tab2, " Driver License: ", gb2, c2);
 		this.addFormattedField(tab2, " Phone Number : ", gb2, c2);
+		this.addField(tab2, " confNo: ", gb2, c2);
+		this.addField(tab2, " vtname: ", gb2, c2);
+		this.addField(tab2, " dlicense: ", gb2, c2);
+		this.addField(tab2, " location: ", gb2, c2);
+		this.addTimeSpinner(tab2, gb2, c2);
 		this.addLabels(tab2,"From Date:", "To Date:", gb2, c2);
 		this.addDatePicker(tab2, gb2, c2);
 		this.addSubmitButton(tab2, gb2, c2, "ReserveVehicle");

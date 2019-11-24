@@ -209,6 +209,7 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 	}
 
 
+
 	/**
 	 * Main method called at launch time
 	 */
