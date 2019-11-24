@@ -61,7 +61,7 @@ public class TerminalTransactions {
 					delegate.showBranch(); 
 					break;
 				case 5:
-					handleDeleteOption();
+					handleQuitOption();
 					break;
 				case 6:
 					handleCustomerQuery();
