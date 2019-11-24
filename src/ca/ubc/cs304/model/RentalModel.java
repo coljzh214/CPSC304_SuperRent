@@ -10,18 +10,20 @@ public class RentalModel {
     private final int confNo;
     private final Date fromDate;
     private final Date toDate;
+    private final int odometer;
     private final String cardName;
     private final int cardNo;
     private final Date expDate;
 
     public RentalModel(int rid, int vlicense, int dlicense, int confNo, Date fromDate, Date toDate,
-                      String cardName, int cardNo, Date expDate) {
+                       int odometer, String cardName, int cardNo, Date expDate) {
         this.rid = rid;
         this.vlicense = vlicense;
         this.dlicense = dlicense;
         this.confNo = confNo;
         this.fromDate = fromDate;
         this.toDate = toDate;
+        this.odometer = odometer;
         this.cardName = cardName;
         this.cardNo = cardNo;
         this.expDate = expDate;
@@ -49,6 +51,10 @@ public class RentalModel {
 
     public Date getToDate() {
         return toDate;
+    }
+
+    public int getOdometer() {
+        return odometer;
     }
 
     public String getCardName() {

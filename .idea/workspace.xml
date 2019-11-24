@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="">
+    <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="added sql script">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/BranchReportModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReportModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReturnInfoModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CPSC304-JavaDemo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CPSC304-JavaDemo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/database/DatabaseConnectionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/LoginWindowDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/LoginWindowDelegate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/TerminalTransactions.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/create_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create_tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/controller/SuperRent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/controller/SuperRent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/delegates/TerminalTransactionsDelegate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/delegates/TerminalTransactionsDelegate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/delegates/UiTransactionsDelegate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/delegates/UiTransactionsDelegate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/BranchModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/BranchModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalReportModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReservationModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReservationModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReturnReportModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/ui/TerminalTransactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/ui/TerminalTransactions.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +76,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -191,7 +210,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>482</line>
+          <line>452</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

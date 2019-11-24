@@ -6,7 +6,7 @@ package ca.ubc.cs304.model;
 public class BranchModel {
 	private final String location;
 	private final String city;
-	
+
 	public BranchModel(String location, String city) {
 		this.location = location;
 		this.city = city;

@@ -9,14 +9,14 @@ import ca.ubc.cs304.delegates.TerminalTransactionsDelegate;
 import ca.ubc.cs304.model.BranchModel;
 
 /**
- * The class is only responsible for handling terminal text inputs. 
+ * The class is only responsible for handling terminal text inputs.
  */
 public class TerminalTransactions {
 	private static final String EXCEPTION_TAG = "[EXCEPTION]";
 	private static final String WARNING_TAG = "[WARNING]";
 	private static final int INVALID_INPUT = Integer.MIN_VALUE;
 	private static final int EMPTY_INPUT = 0;
-	
+
 	private BufferedReader bufferedReader = null;
 	private TerminalTransactionsDelegate delegate = null;
 
@@ -25,13 +25,13 @@ public class TerminalTransactions {
 
 	/**
 	 * Displays simple text interface
-	 */ 
+	 */
 	public void showMainMenu(TerminalTransactionsDelegate delegate) {
 		this.delegate = delegate;
-		
-	    bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		int choice = INVALID_INPUT;
-		
+
 		while (choice != 5) {
 			System.out.println();
 			System.out.println("1. Insert branch");
@@ -71,9 +71,9 @@ public class TerminalTransactions {
 					break;
 				}
 			}
-		}		
+		}
 	}
-	
+
 	private void handleDeleteOption() {
 		String location = null;
 		while (location == null || location.length() <= 0) {
@@ -132,10 +132,10 @@ public class TerminalTransactions {
 											city);
 		delegate.insertBranch(model);
 	}
-	
+
 	private void handleQuitOption() {
 		System.out.println("Good Bye!");
-		
+
 		if (bufferedReader != null) {
 			try {
 				bufferedReader.close();
@@ -143,10 +143,10 @@ public class TerminalTransactions {
 				System.out.println("IOException!");
 			}
 		}
-		
+
 		delegate.terminalTransactionsFinished();
 	}
-	
+
 //	private void handleUpdateOption() {
 //		int id = INVALID_INPUT;
 //		while (id == INVALID_INPUT) {
@@ -162,7 +162,7 @@ public class TerminalTransactions {
 //
 //		delegate.updateBranch(id, name);
 //	}
-	
+
 	private int readInteger(boolean allowEmpty) {
 		String line = null;
 		int input = INVALID_INPUT;
@@ -180,7 +180,7 @@ public class TerminalTransactions {
 		}
 		return input;
 	}
-	
+
 	private String readLine() {
 		String result = null;
 		try {

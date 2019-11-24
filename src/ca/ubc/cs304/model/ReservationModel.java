@@ -1,20 +1,18 @@
 package ca.ubc.cs304.model;
 
 import java.sql.Date;
-import java.sql.Time;
 
 public class ReservationModel {
     private final int confNo;
     private final String vtname;
-    private final int phonenumber;
+    private final int dlicense;
     private final Date fromDate;
     private final Date toDate;
 
-    public ReservationModel(int confNo, String vtname, int phonenumber, Date fromDate,
-                            Date toDate) {
+    public ReservationModel(int confNo, String vtname, int dlicense, Date fromDate, Date toDate) {
         this.confNo = confNo;
         this.vtname = vtname;
-        this.phonenumber = phonenumber;
+        this.dlicense = dlicense;
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
@@ -27,8 +25,8 @@ public class ReservationModel {
         return vtname;
     }
 
-    public int getPhonenumber() {
-        return phonenumber;
+    public int getDlicense() {
+        return dlicense;
     }
 
     public Date getFromDate() {

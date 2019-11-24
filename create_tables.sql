@@ -7,6 +7,13 @@ drop table VehicleType;
 drop table Branch;
 commit;
 
+drop sequence res_seq;
+drop sequence rent_seq;
+commit;
+
+create sequence res_seq start with 1;
+create sequence rent_seq start with 1;
+commit;
 
 create table Branch (
     location varchar(20),
@@ -14,6 +21,7 @@ create table Branch (
     primary key(location, city)
 );
 commit;
+
 create table VehicleType (
     vtname varchar(15) PRIMARY KEY,
     features varchar(30),
@@ -26,6 +34,7 @@ create table VehicleType (
     krate int
 );
 commit;
+
 create table Vehicle (
     vlicense int PRIMARY KEY,
     vid int,
@@ -41,29 +50,30 @@ create table Vehicle (
     foreign key (vtname) references VehicleType(vtname),
     foreign key (location, city) references Branch(location, city)
 );
-
 commit;
+
 create table Customer (
     dlicense int PRIMARY KEY,
     name varchar(30),
     address varchar(30),
     phonenumber int
 );
-
 commit;
+
 create table Reservation (
-    confNo int PRIMARY KEY AUTO_INCREMENT,
+    confNo int DEFAULT res_seq.nextval NOT NULL,
     vtname varchar(15),
     dlicense int,
     fromDate date,
     toDate date,
+    primary key (confNo),
     foreign key (vtname) references VehicleType(vtname),
     foreign key (dlicense) references Customer(dlicense)
 );
 commit;
 
 create table Rental (
-    rid int PRIMARY KEY AUTO_INCREMENT,
+    rid int DEFAULT rent_seq.nextval NOT NULL,
     vlicense int,
     dlicense int,
     confNo int,
@@ -72,6 +82,7 @@ create table Rental (
     cardName varchar(30),
     cardNo int,
     expDate date,
+    primary key (rid),
     foreign key (vlicense) references Vehicle(vlicense),
     foreign key (dlicense) references Customer(dlicense),
     foreign key (confNo) references Reservation(confNo)
@@ -83,16 +94,14 @@ create table RentReturn (
     returnDate date,
     odometer int,
     fullTank char(1),
-    value int;
+    value int,
     foreign key (rid) references Rental(rid)
 );
-
 commit;
 
 insert into branch(location,city) values ('Blundell and No. 3', 'Richmond');
 insert into branch(location,city) values ('Waterfront', 'Vancouver');
 insert into branch(location,city) values ('Lougheed', 'Coquitlam');
-
 
 insert into VehicleType (vtname, features, wrate, drate, hrate,wirate,dirate,hirate,krate) values ('Economy', '', 6, 3, 1, 14, 11, 8, 18);
 insert into VehicleType (vtname, features, wrate, drate, hrate,wirate,dirate,hirate,krate) values ('SUV', '', 9, 7, 4, 19, 16, 9, 25);
@@ -104,8 +113,8 @@ insert into Customer (dlicense, name, address, phonenumber) values (1729311, 'Ra
 insert into Customer (dlicense, name, address, phonenumber) values (1123328, 'Raymond Ng', '696 Ontario St.', 5671123);
 insert into Customer (dlicense, name, address, phonenumber) values (0981726, 'Jessica Wong', '66-993 Ontar St.', 5671123);
 
-insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (133313333, 1, 'Honda', 'Civic', 2006, 'Economy', 'Blundell and No. 3', 'Richmond');
-insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (244424444, 2, 'Nissan', 'Murano', 2016, 'SUV', 'Waterfront', 'Vancouver');
-insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (453423129, 3, 'Nissan', 'Murano', 2013, 'SUV', 'Waterfront', 'Vancouver');
-insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (888888888, 4, 'Ford', 'Mustang', 2003, 'Mid-size', 'Lougheed', 'Coquitlam');
+insert into Vehicle (vlicense, vid, make, model, year, color, odometer, status, vtname, location, city) values (133313333, 1, 'Honda', 'Civic', 2006, 'red', 1080, 'available', 'Economy', 'Blundell and No. 3', 'Richmond');
+insert into Vehicle (vlicense, vid, make, model, year, color, odometer, status, vtname, location, city) values (244424444, 2, 'Nissan', 'Murano', 2016, 'red', 80, 'maintenance', 'SUV', 'Waterfront', 'Vancouver');
+insert into Vehicle (vlicense, vid, make, model, year, color, odometer, status, vtname, location, city) values (453423129, 3, 'Nissan', 'Murano', 2013, 'blue', 14400, 'rented', 'SUV', 'Waterfront', 'Vancouver');
+insert into Vehicle (vlicense, vid, make, model, year, color, odometer, status, vtname, location, city) values (888888888, 4, 'Ford', 'Mustang', 2003, 'white', 10012, 'available', 'Mid-size', 'Lougheed', 'Coquitlam');
 commit;

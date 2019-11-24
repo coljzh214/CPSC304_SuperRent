@@ -10,6 +10,8 @@ import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
 import ca.ubc.cs304.ui.UiTransactions;
 
+import java.sql.SQLException;
+
 /**
  * This is the main controller class that will orchestrate everything.
  */
@@ -57,7 +59,7 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * 
 	 * Insert a branch with the given info
 	 */
-    public void insertBranch(BranchModel model) {
+    public void insertBranch(BranchModel model) throws SQLException {
     	dbHandler.insertBranch(model);
     }
 
@@ -66,7 +68,7 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * 
 	 * Delete branch with given branch ID.
 	 */ 
-    public void deleteBranch(String location, String city) {
+    public void deleteBranch(String location, String city) throws SQLException {
     	dbHandler.deleteBranch(location, city);
     }
     
@@ -85,13 +87,13 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * 
 	 * Displays information about varies bank branches.
 	 */
-    public void showBranch() {
+    public void showBranch() throws SQLException {
     	BranchModel[] models = dbHandler.getBranchInfo();
 		System.out.printf("There are " + models.length + " results");
 		System.out.println();
     	for (int i = 0; i < models.length; i++) {
     		BranchModel model = models[i];
-    		
+
     		// simplified output formatting; truncation may occur
     		System.out.printf("%-10.10s", model.getLocation());
     		System.out.printf("%-20.20s", model.getCity());
