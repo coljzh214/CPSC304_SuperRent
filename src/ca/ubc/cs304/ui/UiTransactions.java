@@ -341,7 +341,7 @@ public class UiTransactions extends JFrame implements ActionListener {
 		JDatePanelImpl datePanel2 = new JDatePanelImpl(model2, p);
 		JDatePickerImpl datePicker2 = new JDatePickerImpl(datePanel2, new DateLabelFormatter());
 		datePicker.setMinimumSize(datePicker.getPreferredSize());
-        datePicker2.setMinimumSize(datePicker.getPreferredSize());
+		datePicker2.setMinimumSize(datePicker.getPreferredSize());
 		tab.setLayout(gb);
 
 		c.gridwidth = GridBagConstraints.RELATIVE;

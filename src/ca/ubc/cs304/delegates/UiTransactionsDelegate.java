@@ -28,6 +28,6 @@ public interface UiTransactionsDelegate {
 	public ReportModel generateReturnReport() throws SQLException;
 	public BranchReportModel generateReturnReport(String location, String city) throws SQLException;
 	public String[] getBranches();
-	
+
 	public void uiTransactionsFinished();
 }
