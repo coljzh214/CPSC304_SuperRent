@@ -7,15 +7,20 @@ public class RentReturnModel {
     private final int rid;
     private final Date returnDate;
     private final int odometer;
-    private final boolean fulltank;
+    private final String fulltank;
     private final int value;
+    private final int duration;
+    private final int rate;
 
-    public RentReturnModel(int rid, Date returnDate, int odometer, boolean fulltank, int value) {
+    public RentReturnModel(int rid, Date returnDate, int odometer, String fulltank, int value,
+                           int duration, int rate) {
         this.rid = rid;
         this.returnDate = returnDate;
         this.odometer = odometer;
         this.fulltank = fulltank;
         this.value = value;
+        this.duration = duration;
+        this.rate = rate;
     }
 
     public int getRid() {
@@ -30,11 +35,19 @@ public class RentReturnModel {
         return odometer;
     }
 
-    public boolean isFulltank() {
+    public String isFulltank() {
         return fulltank;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public int getRate() {
+        return rate;
     }
 }
