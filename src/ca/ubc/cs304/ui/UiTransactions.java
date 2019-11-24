@@ -61,7 +61,7 @@ public class UiTransactions extends JFrame implements ActionListener {
 		JPanel tab1 = new JPanel();
 		GridBagLayout gb = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		String[] vehicleType = new String[] {"SUV", "Van", "Sedan"};
+		String[] vehicleType = delegate.getVehicleTypes();
 		this.addComboBox(tab1, " Vehicle Type: ", vehicleType, gb, c);
 		this.addField(tab1, " Location: ", gb, c);
 		this.addLabels(tab1,"From Date:", "To Date:", gb, c);

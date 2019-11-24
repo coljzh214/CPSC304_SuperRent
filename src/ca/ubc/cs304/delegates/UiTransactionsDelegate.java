@@ -17,6 +17,7 @@ public interface UiTransactionsDelegate {
 	public void deleteBranch(String location, String city) throws SQLException;
 	public void insertBranch(BranchModel model) throws SQLException;
 	public void showBranch() throws SQLException;
+	public String[] getVehicleTypes();
     // public void updateBranch(int branchId, String name);
     public void vehicleQuery(String carType, String location, String startDate, String endDate) throws Exception;
 	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception;
