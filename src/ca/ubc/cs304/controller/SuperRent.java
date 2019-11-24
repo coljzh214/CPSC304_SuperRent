@@ -13,7 +13,7 @@ import ca.ubc.cs304.ui.UiTransactions;
 /**
  * This is the main controller class that will orchestrate everything.
  */
-public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDelegate, UiTransactionsDelegate {
+public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 	private DatabaseConnectionHandler dbHandler = null;
 	private LoginWindow loginWindow = null;
 
@@ -57,7 +57,7 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * 
 	 * Insert a branch with the given info
 	 */
-    public void insertBranch(BranchModel model) {
+    public void insertBranch(BranchModel model) throws Exception {
     	dbHandler.insertBranch(model);
     }
 
@@ -66,7 +66,7 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * 
 	 * Delete branch with given branch ID.
 	 */ 
-    public void deleteBranch(String location, String city) {
+    public void deleteBranch(String location, String city) throws Exception  {
     	dbHandler.deleteBranch(location, city);
     }
     
@@ -76,16 +76,16 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * Update the branch name for a specific ID
 	 */
 
-//    public void updateBranch(int branchId, String name) {
-//    	dbHandler.updateBranch(branchId, name);
-//    }
+	public void updateBranch(String location, String city, BranchModel model) throws Exception{
+    	dbHandler.updateBranch(location, city, model);
+    }
 
     /**
 	 * TermainalTransactionsDelegate Implementation
 	 * 
 	 * Displays information about varies bank branches.
 	 */
-    public void showBranch() {
+    public void showBranch() throws Exception  {
     	BranchModel[] models = dbHandler.getBranchInfo();
 		System.out.printf("There are " + models.length + " results");
 		System.out.println();
@@ -112,8 +112,7 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
     	System.exit(0);
     }
 
-    public void vehicleQuery(String carType, String location, String startDate, String endDate) {
-    	try{
+    public void vehicleQuery(String carType, String location, String startDate, String endDate)  throws Exception {
 			VehicleModel[] models = dbHandler.getVehicleQuery(carType, location, startDate, endDate);
 			System.out.println();
 			for (int i = 0; i < models.length; i++) {
@@ -134,12 +133,6 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 					System.out.printf("%-15.15s", model.getMake());
 				}
 			}
-			// rest of them
-		} catch (Exception e) {
-    		System.out.println("Invalid Arguements for Query");
-    		return;
-		}
-
 	}
 
 	/**
