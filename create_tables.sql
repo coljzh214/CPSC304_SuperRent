@@ -7,6 +7,7 @@ drop table VehicleType;
 drop table Branch;
 commit;
 
+
 create table Branch (
     location varchar(20),
     city varchar(20),
@@ -52,28 +53,23 @@ create table Customer (
 
 commit;
 create table Reservation (
-    confNo int PRIMARY KEY,
+    confNo int PRIMARY KEY AUTO_INCREMENT,
     vtname varchar(15),
-    address varchar(30),
     dlicense int,
     fromDate date,
-    fromTime date,
     toDate date,
-    toTime date,
     foreign key (vtname) references VehicleType(vtname),
     foreign key (dlicense) references Customer(dlicense)
 );
 commit;
 
 create table Rental (
-    rid int PRIMARY KEY,
+    rid int PRIMARY KEY AUTO_INCREMENT,
     vlicense int,
     dlicense int,
     confNo int,
     fromDate date,
-    fromTime date,
     toDate date,
-    toTime date,
     cardName varchar(30),
     cardNo int,
     expDate date,
@@ -86,9 +82,9 @@ commit;
 create table RentReturn (
     rid int PRIMARY KEY,
     returnDate date,
-    returnTime date,
     odometer int,
     fullTank char(1),
+    value int;
     foreign key (rid) references Rental(rid)
 );
 
@@ -97,6 +93,7 @@ commit;
 insert into branch(location,city) values ('Blundell and No. 3', 'Richmond');
 insert into branch(location,city) values ('Waterfront', 'Vancouver');
 insert into branch(location,city) values ('Lougheed', 'Coquitlam');
+
 
 insert into VehicleType (vtname, features, wrate, drate, hrate,wirate,dirate,hirate,krate) values ('Economy', '', 6, 3, 1, 14, 11, 8, 18);
 insert into VehicleType (vtname, features, wrate, drate, hrate,wirate,dirate,hirate,krate) values ('SUV', '', 9, 7, 4, 19, 16, 9, 25);
@@ -112,3 +109,4 @@ insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) v
 insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (244424444, 2, 'Nissan', 'Murano', 2016, 'SUV', 'Waterfront', 'Vancouver');
 insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (453423129, 3, 'Nissan', 'Murano', 2013, 'SUV', 'Waterfront', 'Vancouver');
 insert into Vehicle (vlicense, vid, make, model, year, vtname, location, city) values (888888888, 4, 'Ford', 'Mustang', 2003, 'Mid-size', 'Lougheed', 'Coquitlam');
+commit;
