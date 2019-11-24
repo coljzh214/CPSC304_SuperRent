@@ -3,14 +3,17 @@ package ca.ubc.cs304.controller;
 import ca.ubc.cs304.database.DatabaseConnectionHandler;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalTransactionsDelegate;
+import ca.ubc.cs304.delegates.UiTransactionsDelegate;
 import ca.ubc.cs304.model.BranchModel;
+import ca.ubc.cs304.model.VehicleModel;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
+import ca.ubc.cs304.ui.UiTransactions;
 
 /**
  * This is the main controller class that will orchestrate everything.
  */
-public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDelegate {
+public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDelegate, UiTransactionsDelegate {
 	private DatabaseConnectionHandler dbHandler = null;
 	private LoginWindow loginWindow = null;
 
@@ -35,7 +38,8 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 			// Once connected, remove login window and start text transaction flow
 			loginWindow.dispose();
 
-			TerminalTransactions transaction = new TerminalTransactions();
+			UiTransactions transaction = new UiTransactions();
+			//TerminalTransactions transaction = new TerminalTransactions();
 			transaction.showMainMenu(this);
 		} else {
 			loginWindow.handleLoginFailed();
@@ -62,8 +66,8 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * 
 	 * Delete branch with given branch ID.
 	 */ 
-    public void deleteBranch(int branchId) {
-    	dbHandler.deleteBranch(branchId);
+    public void deleteBranch(String location, String city) {
+    	dbHandler.deleteBranch(location, city);
     }
     
     /**
@@ -72,9 +76,9 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * Update the branch name for a specific ID
 	 */
 
-    public void updateBranch(int branchId, String name) {
-    	dbHandler.updateBranch(branchId, name);
-    }
+//    public void updateBranch(int branchId, String name) {
+//    	dbHandler.updateBranch(branchId, name);
+//    }
 
     /**
 	 * TermainalTransactionsDelegate Implementation
@@ -83,25 +87,14 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 */
     public void showBranch() {
     	BranchModel[] models = dbHandler.getBranchInfo();
-    	
+		System.out.printf("There are " + models.length + " results");
+		System.out.println();
     	for (int i = 0; i < models.length; i++) {
     		BranchModel model = models[i];
     		
     		// simplified output formatting; truncation may occur
-    		System.out.printf("%-10.10s", model.getId());
-    		System.out.printf("%-20.20s", model.getName());
-    		if (model.getAddress() == null) {
-    			System.out.printf("%-20.20s", " ");
-    		} else {
-    			System.out.printf("%-20.20s", model.getAddress());
-    		}
-    		System.out.printf("%-15.15s", model.getCity());
-    		if (model.getPhoneNumber() == 0) {
-    			System.out.printf("%-15.15s", " ");
-    		} else {
-    			System.out.printf("%-15.15s", model.getPhoneNumber());
-    		}
-    		
+    		System.out.printf("%-10.10s", model.getLocation());
+    		System.out.printf("%-20.20s", model.getCity());
     		System.out.println();
     	}
     }
@@ -118,12 +111,49 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
     	
     	System.exit(0);
     }
-    
+
+    public void vehicleQuery(String carType, String location, String startDate, String endDate) {
+    	try{
+			VehicleModel[] models = dbHandler.getVehicleQuery(carType, location, startDate, endDate);
+			System.out.println();
+			for (int i = 0; i < models.length; i++) {
+				VehicleModel model = models[i];
+
+				// simplified output formatting; truncation may occur
+				System.out.printf("%-10.10s", model.getVlicense());
+				System.out.printf("%-20.20s", model.getVid());
+				if (model.getMake() == null) {
+					System.out.printf("%-20.20s", " ");
+				} else {
+					System.out.printf("%-20.20s", model.getMake());
+				}
+				System.out.printf("%-15.15s", model.getCity());
+				if (model.getMake() == null) {
+					System.out.printf("%-15.15s", " ");
+				} else {
+					System.out.printf("%-15.15s", model.getMake());
+				}
+			}
+			// rest of them
+		} catch (Exception e) {
+    		System.out.println("Invalid Arguements for Query");
+    		return;
+		}
+
+	}
+
 	/**
 	 * Main method called at launch time
 	 */
 	public static void main(String args[]) {
 		SuperRent SuperRent = new SuperRent();
 		SuperRent.init();
+	}
+
+	public void uiTransactionsFinished() {
+    	dbHandler.close();
+    	dbHandler = null;
+    	
+    	System.exit(0);
 	}
 }

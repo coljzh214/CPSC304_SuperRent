@@ -9,305 +9,804 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import ca.ubc.cs304.model.BranchModel;
-import ca.ubc.cs304.model.CustomerModel;
-import ca.ubc.cs304.model.VehicleModel;
+import ca.ubc.cs304.model.*;
 
 /**
  * This class handles all database related transactions
  */
 public class DatabaseConnectionHandler {
-	private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
-	private static final String EXCEPTION_TAG = "[EXCEPTION]";
-	private static final String WARNING_TAG = "[WARNING]";
-	
-	private Connection connection = null;
-	
-	public DatabaseConnectionHandler() {
-		try {
-			// Load the Oracle JDBC driver
-			// Note that the path could change for new drivers
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		}
-	}
+    private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
+    private static final String EXCEPTION_TAG = "[EXCEPTION]";
+    private static final String WARNING_TAG = "[WARNING]";
 
-	public void initializeDatabase() throws SQLException, IOException {
-		BufferedReader reader = null;
-		Statement stmt;
-		try {
-			stmt = connection.createStatement();
-			reader = new BufferedReader(new FileReader("create_tables.sql"));
-			StringBuilder b = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				b.append(line);
-			}
-			String[] statements = b.toString().split(";");
-			for (String statement: statements) {
-				if (statement.trim().isEmpty()) {
-					continue;
-				}
-				stmt.execute(statement);
-			}
-		} catch (Exception e) {
-				e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
-	}
-	
-	public void close() {
-		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		}
-	}
+    private Connection connection = null;
 
-	public boolean login(String username, String password) {
-		try {
-			if (connection != null) {
-				connection.close();
-			}
+    public DatabaseConnectionHandler() {
+        try {
+            // Load the Oracle JDBC driver
+            // Note that the path could change for new drivers
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
 
-			connection = DriverManager.getConnection(ORACLE_URL, username, password);
-			connection.setAutoCommit(false);
+    public void initializeDatabase() throws SQLException, IOException {
+        BufferedReader reader = null;
+        Statement stmt;
+        try {
+            stmt = connection.createStatement();
+            reader = new BufferedReader(new FileReader("create_tables.sql"));
+            StringBuilder b = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                b.append(line);
+            }
+            String[] statements = b.toString().split(";");
+            for (String statement : statements) {
+                if (statement.trim().isEmpty()) {
+                    continue;
+                }
+                stmt.execute(statement);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+    }
 
-			System.out.println("\nConnected to Oracle!");
-			return true;
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			return false;
-		}
-	}
+    public void close() {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
 
-	private void rollbackConnection() {
-		try  {
-			connection.rollback();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		}
-	}
+    public boolean login(String username, String password) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
 
-	public void deleteBranch(int branchId) {
-		try {
-			PreparedStatement ps = connection.prepareStatement("DELETE FROM branch WHERE branch_id = ?");
-			ps.setInt(1, branchId);
-			
-			int rowCount = ps.executeUpdate();
-			if (rowCount == 0) {
-				System.out.println(WARNING_TAG + " Branch " + branchId + " does not exist!");
-			}
-			
-			connection.commit();
-	
-			ps.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			rollbackConnection();
-		}
-	}
-	
-	public void insertBranch(BranchModel model) {
-		try {
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO branch VALUES (?,?,?,?,?)");
-			ps.setInt(1, model.getId());
-			ps.setString(2, model.getName());
-			ps.setString(3, model.getAddress());
-			ps.setString(4, model.getCity());
-			if (model.getPhoneNumber() == 0) {
-				ps.setNull(5, java.sql.Types.INTEGER);
-			} else {
-				ps.setInt(5, model.getPhoneNumber());
-			}
+            connection = DriverManager.getConnection(ORACLE_URL, username, password);
+            connection.setAutoCommit(false);
 
-			ps.executeUpdate();
-			connection.commit();
+            System.out.println("\nConnected to Oracle!");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return false;
+        }
+    }
 
-			ps.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			rollbackConnection();
-		}
-	}
-	
-	public BranchModel[] getBranchInfo() {
-		ArrayList<BranchModel> result = new ArrayList<BranchModel>();
-		
-		try {
-			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM branch");
-		
-    		// get info on ResultSet
-    		ResultSetMetaData rsmd = rs.getMetaData();
+    private void rollbackConnection() {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
 
-    		System.out.println(" ");
+    public void deleteBranch(String location, String city) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM branch WHERE location = ? AND city = ?");
+        ps.setString(1, location);
+        ps.setString(2, city);
 
-    		// display column names;
-    		for (int i = 0; i < rsmd.getColumnCount(); i++) {
-    			// get column name and print it
-    			System.out.printf("%-15s", rsmd.getColumnName(i + 1));
-    		}
-			
-			while(rs.next()) {
-				BranchModel model = new BranchModel(rs.getString("branch_addr"),
-													rs.getString("branch_city"),
-													rs.getInt("branch_id"),
-													rs.getString("branch_name"),
-													rs.getInt("branch_phone"));
-				result.add(model);
-			}
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Branch " + location + " " + city + " does not exist!");
+        }
 
-			rs.close();
-			stmt.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		}	
-		
-		return result.toArray(new BranchModel[result.size()]);
-	}
-	
-	public void updateBranch(int id, String name) {
-		try {
-		  PreparedStatement ps = connection.prepareStatement("UPDATE branch SET branch_name = ? WHERE branch_id = ?");
-		  ps.setString(1, name);
-		  ps.setInt(2, id);
-		
-		  int rowCount = ps.executeUpdate();
-		  if (rowCount == 0) {
-		      System.out.println(WARNING_TAG + " Branch " + id + " does not exist!");
-		  }
-	
-		  connection.commit();
-		  
-		  ps.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			rollbackConnection();
-		}	
-	}
+        connection.commit();
+
+        ps.close();
+    }
 
 
-	public void insertCustomer(CustomerModel model) {
-		try {
-			PreparedStatement ps = connection.prepareStatement("INSERT INTO branch VALUES (?,?,?,?,?)");
-			ps.setInt(1, model.getDlicense());
-			ps.setString(2, model.getName());
-			ps.setString(3, model.getAddress());
-			ps.setInt(4, model.getPhonenumber());
+    public void deleteVehicleType(String vtname) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM VehicleType WHERE vtname = ? ");
+        ps.setString(1, vtname);
 
-			ps.executeUpdate();
-			connection.commit();
-			ps.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			rollbackConnection();
-		}
-	}
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " VechicleType " + vtname + " does not exist!");
+        }
 
-	public void deleteCustomer(int dLicense) {
-		try {
-			PreparedStatement ps = connection.prepareStatement("DELETE FROM customer WHERE dLicense = ?");
-			ps.setInt(1, dLicense);
-			int rowCount = ps.executeUpdate();
-			if (rowCount == 0) {
-				System.out.println(WARNING_TAG + " Customer with license " + dLicense + " does not exist!");
-			}
-			connection.commit();
-			ps.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			rollbackConnection();
-		}
-	}
+        connection.commit();
 
-	public void updateCustomerInfo() {
-		return;
-	}
+        ps.close();
+    }
 
-	public VehicleModel[] viewAvailableVehicles(String vtname, String location) {
-		ArrayList<VehicleModel> result = new ArrayList<VehicleModel>();
-		try {
-			List array = new ArrayList();
-			if (vtname != null) {
-				array.add("v.vtname = " + vtname);
-			}
-			if (location != null) {
-				array.add("v.location = " + location);
-			}
-			String condition_str = String.join(" AND ", array);
-			String result_str = "SELECT * " +
-									"FROM Vehicle v, VehicleType vt " +
-									"WHERE " + condition_str + " AND v.status = 'available' " +
-									"AND v.vtname = vt.vtname";
-			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM branch");
-			while(rs.next()) {
-				// TODO: replace with VehicleModel
-//				VehicleModel model = new VehicleModel(rs.getString("branch_addr"),
-//						rs.getString("branch_city"),
-//						rs.getInt("branch_id"),
-//						rs.getString("branch_name"),
-//						rs.getInt("branch_phone"));
-//				result.add(model);
-			}
+    public void deleteVehicle(String vlicense) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Vehicle WHERE vlicense = ? ");
+        ps.setString(1, vlicense);
 
-			rs.close();
-			stmt.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		}
-		return null;
-	}
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Vechicle " + vlicense + " does not exist!");
+        }
 
-	public void createReservation() {
-		return;
-	}
+        connection.commit();
 
-	public void updateVehicleStatus(String status, int vlicense) {
-		try {
-			PreparedStatement ps = connection.prepareStatement("UPDATE Vehicle SET status = ? WHERE vlicense = ?");
-			ps.setString(1, status);
-			ps.setInt(2, vlicense);
-			int rowCount = ps.executeUpdate();
-			if (rowCount == 0) {
-				System.out.println(WARNING_TAG + " Vehicle " + vlicense + " does not exist!");
-			}
-			connection.commit();
-			ps.close();
-		} catch (SQLException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-			rollbackConnection();
-		}
-	}
+        ps.close();
+    }
 
-	public void processRental() {
-		return;
-	}
+    public void deleteReservation(int confNo) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Reservation WHERE confNo = ? ");
+        ps.setInt(1, confNo);
 
-	public void processReturn() {
-		return;
-	}
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Customer " + confNo + " does not exist!");
+        }
 
-	public void generateRentalReport() {
-		return;
-	}
+        connection.commit();
 
-	public void generateRentalReport(String location, String city) {
-		return;
-	}
+        ps.close();
+    }
 
-	public void generateReturnReport() {
-		return;
-	}
+    public void deleteRental(int rid) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM Rental WHERE rid = ? ");
+        ps.setInt(1, rid);
 
-	public void generateReturnReport(String location, String city) {
-		return;
-	}
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Customer " + rid + " does not exist!");
+        }
+
+        connection.commit();
+
+        ps.close();
+    }
+
+    public void deleteRentReturn(int rid) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM RentReturn WHERE rid = ? ");
+        ps.setInt(1, rid);
+
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Customer " + rid + " does not exist!");
+        }
+
+        connection.commit();
+
+        ps.close();
+    }
+
+    public void insertBranch(BranchModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO branch VALUES (?,?)");
+        ps.setString(1, model.getLocation());
+        ps.setString(2, model.getCity());
+
+        ps.executeUpdate();
+        connection.commit();
+
+        ps.close();
+    }
+
+    public String[] getTableInfo() throws SQLException {
+        ArrayList<String> result = new ArrayList<String>();
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT table_name FROM user_tables");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            String table = rs.getString("table_name");
+            result.add(table);
+        }
+
+        rs.close();
+        stmt.close();
+        return result.toArray(new String[result.size()]);
+    }
+
+    public RentReturnModel[] getRentReturnInfo() throws SQLException {
+        ArrayList<RentReturnModel> result = new ArrayList<RentReturnModel>();
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM RentReturn");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            RentReturnModel model = new RentReturnModel(rs.getInt("rid"),
+                    rs.getDate("returnDate"),
+                    rs.getInt("odometer"),
+                    rs.getString("fullTank") == "1",
+                    rs.getInt("value"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+        return result.toArray(new RentReturnModel[result.size()]);
+    }
+
+    public RentalModel[] getRentalInfo() throws SQLException {
+        ArrayList<RentalModel> result = new ArrayList<RentalModel>();
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Rental");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            RentalModel model = new RentalModel(rs.getInt("rid"),
+                    rs.getInt("vlicense"),
+                    rs.getInt("dlicense"),
+                    rs.getInt("confNo"),
+                    rs.getDate("fromDate"),
+                    rs.getDate("toDate"),
+                    rs.getString("cardName"),
+                    rs.getInt("cardNo"),
+                    rs.getDate("expDate"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+        return result.toArray(new RentalModel[result.size()]);
+    }
+
+    public ReservationModel[] getReservationInfo() throws SQLException {
+        ArrayList<ReservationModel> result = new ArrayList<ReservationModel>();
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Reservation");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            ReservationModel model = new ReservationModel(rs.getInt("confNo"),
+                    rs.getString("vtname"),
+                    rs.getInt("dlicense"),
+                    rs.getDate("fromDate"),
+                    rs.getDate("toDate"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+
+        return result.toArray(new ReservationModel[result.size()]);
+    }
+
+    public CustomerModel[] getCustomerInfo() throws SQLException {
+        ArrayList<CustomerModel> result = new ArrayList<CustomerModel>();
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Customer");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            CustomerModel model = new CustomerModel(rs.getInt("dlicense"),
+                    rs.getString("name"),
+                    rs.getString("address"),
+                    rs.getInt("phonenumber"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+
+        return result.toArray(new CustomerModel[result.size()]);
+    }
+
+    public VehicleTypeModel[] getVehicleTypeInfo() throws SQLException {
+        ArrayList<VehicleTypeModel> result = new ArrayList<VehicleTypeModel>();
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM VehicleType");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            VehicleTypeModel model = new VehicleTypeModel(rs.getString("vtname"),
+                    rs.getString("features"),
+                    rs.getInt("wrate"),
+                    rs.getInt("drate"),
+                    rs.getInt("hrate"),
+                    rs.getInt("wirate"),
+                    rs.getInt("dirate"),
+                    rs.getInt("hirate"),
+                    rs.getInt("krate"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+
+        return result.toArray(new VehicleTypeModel[result.size()]);
+    }
+
+    public VehicleModel[] getVehicleInfo() throws SQLException {
+        ArrayList<VehicleModel> result = new ArrayList<VehicleModel>();
+
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Vehicle");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            VehicleModel model = new VehicleModel(rs.getInt("vlicense"),
+                    rs.getInt("vid"),
+                    rs.getString("make"),
+                    rs.getString("model"),
+                    rs.getInt("year"),
+                    rs.getString("color"),
+                    rs.getInt("odometer"),
+                    rs.getString("status"),
+                    rs.getString("vtname"),
+                    rs.getString("location"),
+                    rs.getString("city"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+        return result.toArray(new VehicleModel[result.size()]);
+    }
+
+    public BranchModel[] getBranchInfo() throws SQLException {
+        ArrayList<BranchModel> result = new ArrayList<BranchModel>();
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM branch");
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            BranchModel model = new BranchModel(rs.getString("location"),
+                    rs.getString("city"));
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+        return result.toArray(new BranchModel[result.size()]);
+    }
+
+    public VehicleModel[] getVehicleQuery(String vType, String location, String startDateString, String endDateString) throws IllegalArgumentException, SQLException {
+        ArrayList<VehicleModel> result = new ArrayList<VehicleModel>();
+        java.sql.Date endDate = null;
+        java.sql.Date startDate = null;
+        try {
+            if (startDateString != null && startDateString.length() > 0)
+                startDate = Date.valueOf(startDateString);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+        try {
+            if (endDateString != null && endDateString.length() > 0)
+                endDate = Date.valueOf(endDateString);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+        String sqlQuery = "SELECT DISTINCT v.* FROM Vehicle v, VehicleType vt" +
+                " WHERE v.vtname = vt.vtname ";
+        if (location.length() > 0) {
+            sqlQuery += " AND v.location = '" + location + "'";
+        }
+        if (vType.length() > 0) {
+            sqlQuery += " AND vt.vtname = '" + vType + "'";
+        }
+
+        if (startDate != null && endDate != null) {
+            if (startDate.getTime() > endDate.getTime()) {
+                throw new IllegalArgumentException("StartDate must be less than endDate");
+            }
+            sqlQuery += " AND NOT EXISTS  (SELECT * FROM Rental ren WHERE " +
+                    " v.vlicense = ren.vlicense AND (to_date('" + startDate + "'), to_date('" + endDate + "')) OVERLAPS (ren.fromDate, ren.toDate))";
+            sqlQuery += " AND NOT EXISTS  (SELECT * FROM Rental ren, Reservation res WHERE " +
+                    " v.vlicense = ren.vlicense AND ren.confNo = ren.confNo AND (to_date('" + startDate + "'), to_date('" + endDate + "')) OVERLAPS (res.fromDate, res.toDate))";
+        }
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        System.out.println(" ");
+
+        // display column names;
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            // get column name and print it
+            System.out.printf("%-15s", rsmd.getColumnName(i + 1));
+        }
+
+        while (rs.next()) {
+            VehicleModel model = new VehicleModel(rs.getInt("vlicense"),
+                    rs.getInt("vid"),
+                    rs.getString("make"),
+                    rs.getString("model"),
+                    rs.getInt("year"),
+                    rs.getString("color"),
+                    rs.getInt("odometer"),
+                    rs.getString("status"),
+                    rs.getString("vtname"),
+                    rs.getString("location"),
+                    rs.getString("city")
+            );
+            result.add(model);
+        }
+
+        rs.close();
+        stmt.close();
+
+        return result.toArray(new VehicleModel[result.size()]);
+    }
+
+
+    public void updateBranch(String location, String city, BranchModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE branch SET location = ?, city = ? WHERE location = ? AND city =?");
+        ps.setString(1, model.getLocation());
+        ps.setString(2, model.getCity());
+        ps.setString(3, location);
+        ps.setString(4, city);
+
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Branch " + location + ", " + city + " does not exist!");
+        }
+
+        connection.commit();
+
+        ps.close();
+    }
+
+    public void updateVehicleType(String vtname, VehicleTypeModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE vehicle SET vtname = ?, feature = ?, wrate = ?," +
+                " drate = ?, hrate = ?, wirate = ?, dirate = ?, hirate = ?, krate = ?" +
+                " WHERE vtname = ?");
+        ps.setString(1, model.getVtname());
+        ps.setString(2, model.getFeatures());
+        ps.setInt(3, model.getWrate());
+        ps.setInt(4, model.getDrate());
+        ps.setInt(5, model.getHrate());
+        ps.setInt(6, model.getWirate());
+        ps.setInt(7, model.getDirate());
+        ps.setInt(8, model.getHirate());
+        ps.setInt(9, model.getKrate());
+        ps.setString(10, vtname);
+
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " VehicleType " + vtname + " does not exist!");
+        }
+
+        connection.commit();
+
+        ps.close();
+    }
+
+    public void insertReservation(ReservationModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Reservation VALUES (?,?,?,?,?)");
+        ps.setInt(1, model.getConfNo());
+        ps.setString(2, model.getVtname());
+        ps.setInt(3, model.getPhonenumber());
+        ps.setDate(4, model.getFromDate());
+        ps.setDate(5, model.getToDate());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void updateReservation(int confNo, ReservationModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE Reservation SET confNo = ?, vtname = ?," +
+                " dlicense = ?, fromDate = ?, toDate = ? WHERE confNo = ?");
+        ps.setInt(1, model.getConfNo());
+        ps.setString(2, model.getVtname());
+        ps.setInt(3, model.getPhonenumber());
+        ps.setDate(4, model.getFromDate());
+        ps.setDate(5, model.getToDate());
+        ps.setInt(6, confNo);
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void insertVehicleType(VehicleTypeModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO VehicleType VALUES (?,?,?,?,?,?,?,?,?)");
+        ps.setString(1, model.getVtname());
+        ps.setString(2, model.getFeatures());
+        ps.setInt(3, model.getWrate());
+        ps.setInt(4, model.getDrate());
+        ps.setInt(5, model.getHrate());
+        ps.setInt(6, model.getWirate());
+        ps.setInt(7, model.getDirate());
+        ps.setInt(8, model.getHirate());
+        ps.setInt(9, model.getKrate());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void insertVehicle(VehicleModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Vehicle VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        ps.setInt(1, model.getVlicense());
+        ps.setInt(2, model.getVid());
+        ps.setString(3, model.getMake());
+        ps.setString(4, model.getModel());
+        ps.setInt(5, model.getYear());
+        ps.setString(6, model.getColor());
+        ps.setInt(7, model.getOdometer());
+        ps.setString(8, model.getStatus());
+        ps.setString(9, model.getVtname());
+        ps.setString(10, model.getLocation());
+        ps.setString(11, model.getCity());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void updateVehicle(int vlicense, VehicleModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE Vehicle SET vlicense = ?, " +
+                " vid = ?, make = ? , model = ?, year = ?, color = ?, odometer =?, status = ?, vtname = ?," +
+                " location = ?, city = ? WHERE vlicense = ?");
+        ps.setInt(1, model.getVlicense());
+        ps.setInt(2, model.getVid());
+        ps.setString(3, model.getMake());
+        ps.setString(4, model.getModel());
+        ps.setInt(5, model.getYear());
+        ps.setString(6, model.getColor());
+        ps.setInt(7, model.getOdometer());
+        ps.setString(8, model.getStatus());
+        ps.setString(9, model.getVtname());
+        ps.setString(10, model.getLocation());
+        ps.setString(11, model.getCity());
+        ps.setInt(12, vlicense);
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void insertRental(RentalModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Rental VALUES (?,?,?,?,?,?,?,?,?)");
+        ps.setInt(1, model.getRid());
+        ps.setInt(2, model.getVlicense());
+        ps.setInt(3, model.getDlicense());
+        ps.setInt(4, model.getConfNo());
+        ps.setDate(5, model.getFromDate());
+        ps.setDate(6, model.getToDate());
+        ps.setString(7, model.getCardName());
+        ps.setInt(8, model.getCardNo());
+        ps.setDate(9, model.getExpDate());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void updateRental(int rid, RentalModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UDPATE Rental SET rid = ?, vlicense = ?, dlicense = ?," +
+                " confNo = ?, fromDate = ?, toDate = ?, cardName = ?, cardNo = ? expDate = ? WHERE rid = ?");
+        ps.setInt(1, model.getRid());
+        ps.setInt(2, model.getVlicense());
+        ps.setInt(3, model.getDlicense());
+        ps.setInt(4, model.getConfNo());
+        ps.setDate(5, model.getFromDate());
+        ps.setDate(6, model.getToDate());
+        ps.setString(7, model.getCardName());
+        ps.setInt(8, model.getCardNo());
+        ps.setDate(9, model.getExpDate());
+        ps.setInt(10, model.getRid());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void insertRentReturn(RentReturnModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO RentReturn VALUES (?,?,?,?,?)");
+        ps.setInt(1, model.getRid());
+        ps.setDate(2, model.getReturnDate());
+        ps.setInt(3, model.getOdometer());
+        ps.setBoolean(4, model.isFulltank());
+        ps.setInt(5, model.getValue());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void insertRentReturn(int rid, RentReturnModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE RentReturn SET rid = ?, returnDate = ?," +
+                " odometer = ?, fullTank = ?, value = ? WHERE rid = ?");
+        ps.setInt(1, model.getRid());
+        ps.setDate(2, model.getReturnDate());
+        ps.setInt(3, model.getOdometer());
+        ps.setBoolean(4, model.isFulltank());
+        ps.setInt(5, model.getValue());
+        ps.setInt(1, rid);
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void insertCustomer(CustomerModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?)");
+        ps.setInt(1, model.getDlicense());
+        ps.setString(2, model.getName());
+        ps.setString(3, model.getAddress());
+        ps.setInt(4, model.getPhonenumber());
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+    public void updateCustomer(int dlicense, CustomerModel model) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE Customer SET dlicense = ?, name = ?," +
+                " address = ?, phonenumber = ? WHERE dlicense = ?");
+        ps.setInt(1, model.getDlicense());
+        ps.setString(2, model.getName());
+        ps.setString(3, model.getAddress());
+        ps.setInt(4, model.getPhonenumber());
+        ps.setInt(5, dlicense);
+
+        ps.executeUpdate();
+        connection.commit();
+        ps.close();
+    }
+
+
+    public void deleteCustomer(int dLicense) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM customer WHERE dLicense = ?");
+        ps.setInt(1, dLicense);
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Customer with license " + dLicense + " does not exist!");
+        }
+        connection.commit();
+        ps.close();
+    }
+
+    public void updateCustomer() {
+        return;
+    }
+
+    public ReservationModel createReservation(ReservationModel res, CustomerModel Customer) throws Exception, SQLException {
+        Statement stmt = connection.createStatement();
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM Customer WHERE dlicense = ?");
+        ps.setInt(1, Customer.getDlicense());
+
+        VehicleModel[] availablevehicles = getVehicleQuery(res.getVtname(), "", res.getFromDate().toString(), res.getToDate().toString());
+        if (availablevehicles.length <= 0) {
+            throw new Exception("There are no vehicles of that type available");
+        }
+
+        ResultSet rs = ps.executeQuery();
+        // get info on ResultSet
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        // decides whether to create Customer or not
+        if (!rs.next()) {
+            insertCustomer(Customer);
+        }
+        insertReservation(res);
+        rs.close();
+        stmt.close();
+        return res;
+    }
+
+    public void updateVehicleStatus(String status, int vlicense) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE Vehicle SET status = ? WHERE vlicense = ?");
+        ps.setString(1, status);
+        ps.setInt(2, vlicense);
+        int rowCount = ps.executeUpdate();
+        if (rowCount == 0) {
+            System.out.println(WARNING_TAG + " Vehicle " + vlicense + " does not exist!");
+        }
+        connection.commit();
+        ps.close();
+    }
+
+    public void processRental() {
+        return;
+    }
+
+    public void processReturn() {
+        return;
+    }
+
+    public void generateRentalReport() {
+        return;
+    }
+
+    public void generateRentalReport(String location, String city) {
+        return;
+    }
+
+    public void generateReturnReport() {
+        return;
+    }
+
+    public void generateReturnReport(String location, String city) {
+        return;
+    }
 }
