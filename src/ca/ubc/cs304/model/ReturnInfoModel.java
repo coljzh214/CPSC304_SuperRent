@@ -2,7 +2,7 @@ package ca.ubc.cs304.model;
 
 import java.sql.Date;
 
-public class ReturnInfoModel {
+public class ReturnInfoModel{
     private final int vlicense;
     private final int wrate;
     private final int drate;

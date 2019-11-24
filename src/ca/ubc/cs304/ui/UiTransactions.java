@@ -56,7 +56,7 @@ public class UiTransactions extends JFrame implements ActionListener {
 		JPanel tab1 = new JPanel();
 		GridBagLayout gb = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		String[] vehicleType = new String[] {"SUV", "Van", "Sedan"};
+		String[] vehicleType = delegate.getVehicleTypes();
 		this.addComboBox(tab1, " Vehicle Type: ", vehicleType, gb, c);
 		this.addField(tab1, " Location: ", gb, c);
 		this.addLabels(tab1,"From Date:", "To Date:", gb, c);
@@ -68,7 +68,8 @@ public class UiTransactions extends JFrame implements ActionListener {
 		GridBagConstraints c2 = new GridBagConstraints();
 		this.addField(tab2, " confNo: ", gb2, c2);
 		this.addField(tab2, " vtname: ", gb2, c2);
-		this.addField(tab2, " cellphone: ", gb2, c2);
+		this.addField(tab2, " dlicense: ", gb2, c2);
+		this.addField(tab2, " location: ", gb2, c2);
 		this.addTimeSpinner(tab2, gb2, c2);
 		this.addLabels(tab2,"From Date:", "To Date:", gb2, c2);
 		this.addDatePicker(tab2, gb2, c2);
@@ -177,7 +178,6 @@ public class UiTransactions extends JFrame implements ActionListener {
                 delegate.vehicleQuery((String) this.comboBoxs.get(0).getSelectedItem(), this.textFields.get(0).getText(), 
 				this.datePickers.get(0).getJFormattedTextField().getText(), this.datePickers.get(1).getJFormattedTextField().getText());
             } else if (command == "ReserveVehicle") {
-				JOptionPane.showMessageDialog(null, (String) this.comboBoxs.get(0).getSelectedItem(), "Error Message", JOptionPane.INFORMATION_MESSAGE);
             } else if (command == "RentVehicle") {
 
 			} else if (command == "RentVehicle2") {

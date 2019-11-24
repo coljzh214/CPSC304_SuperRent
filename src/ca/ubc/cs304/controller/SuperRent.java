@@ -6,11 +6,13 @@ import ca.ubc.cs304.delegates.TerminalTransactionsDelegate;
 import ca.ubc.cs304.delegates.UiTransactionsDelegate;
 import ca.ubc.cs304.model.BranchModel;
 import ca.ubc.cs304.model.VehicleModel;
+import ca.ubc.cs304.model.VehicleTypeModel;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
 import ca.ubc.cs304.ui.UiTransactions;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * This is the main controller class that will orchestrate everything.
@@ -138,6 +140,29 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 	}
 
 	/**
+	 * transaction returns vehicleTypes
+	 */
+	public String[] getVehicleTypes() {
+		try {
+			VehicleTypeModel[] models = dbHandler.getVehicleTypeInfo();
+			ArrayList<String> ret = new ArrayList<String>();
+			System.out.printf("There are " + models.length + " results");
+			System.out.println();
+			//add empty entry
+			ret.add("");
+			for (int i = 0; i < models.length; i++) {
+				VehicleTypeModel model = models[i];
+				ret.add(model.getVtname());
+			}
+			return ret.toArray(new String[ret.size()]);
+		} catch (SQLException e) {
+			String[] ret = {""};
+			return ret;
+		}
+	}
+
+
+	/**
 	 * Main method called at launch time
 	 */
 	public static void main(String args[]) {
@@ -151,4 +176,6 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
     	
     	System.exit(0);
 	}
+
+
 }

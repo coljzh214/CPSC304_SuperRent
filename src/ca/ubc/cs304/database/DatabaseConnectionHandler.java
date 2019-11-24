@@ -28,6 +28,28 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public String[] getAbstractTableInfo(String tableName) {
+        try {
+            ArrayList<String> ret = new ArrayList<String>();
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM ?");
+            ps.setString(1, tableName);
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                // get column name and add to return value
+                ret.add(rsmd.getColumnName(i + 1));
+            }
+
+            connection.commit();
+            ps.close();
+            return ret.toArray(new String[ret.size()]);
+        } catch (SQLException e) {
+            String[] ret = {};
+            return ret;
+        }
+    }
+
     public void close() {
         try {
             if (connection != null) {
@@ -52,6 +74,26 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             return false;
+        }
+    }
+    public int getNewConfNo() {
+        try{
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("select res_seq.currval as val from dual");
+            int ret;
+
+            // display column names;
+            if (rs.next()) {
+                 ret = rs.getInt("val");
+            } else {
+                throw new SQLException("confNo could not be generated");
+            }
+
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException e ) {
+            return -1;
         }
     }
 
