@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="added sql script">
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/CustomerModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentReturnModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentalReportModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReservationModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReturnReportModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/VehicleModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/VehicleTypeModel.java" afterDir="false" />
+    <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/database/DatabaseConnectionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/database/DatabaseConnectionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/LoginWindowDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/LoginWindowDelegate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/TerminalTransactionsDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/TerminalTransactionsDelegate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/BranchModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/BranchModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/LoginWindow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/TerminalTransactions.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/TerminalTransactions.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create_tables.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" afterDir="false" />
     </list>
@@ -113,12 +98,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.SuperRent" />
+      <item itemvalue="Application.Bank" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.SuperRent" />
         <item itemvalue="Application.Bank" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand />
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration>C:\Users\Colin Zhang\AppData\Roaming\Subversion</configuration>
@@ -147,7 +146,21 @@
       <option name="project" value="LOCAL" />
       <updated>1574400731633</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Customer Transactions">
+      <created>1574461779914</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1574461779914</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Database Management Methods">
+      <created>1574576315418</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1574576315418</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,7 +171,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -167,20 +182,17 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added sql script" />
     <MESSAGE value="modified the create table sql script" />
-    <option name="LAST_COMMIT_MESSAGE" value="modified the create table sql script" />
+    <MESSAGE value="Customer Transactions" />
+    <MESSAGE value="Database Management Methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Database Management Methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>147</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>140</line>
-          <option name="timeStamp" value="2" />
+          <line>482</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
