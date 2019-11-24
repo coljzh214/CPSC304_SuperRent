@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import ca.ubc.cs304.delegates.TerminalTransactionsDelegate;
 import ca.ubc.cs304.model.BranchModel;
@@ -26,7 +27,7 @@ public class TerminalTransactions {
 	/**
 	 * Displays simple text interface
 	 */
-	public void showMainMenu(TerminalTransactionsDelegate delegate) {
+	public void showMainMenu(TerminalTransactionsDelegate delegate) throws SQLException {
 		this.delegate = delegate;
 
 		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -74,7 +75,7 @@ public class TerminalTransactions {
 		}
 	}
 
-	private void handleDeleteOption() {
+	private void handleDeleteOption() throws SQLException {
 		String location = null;
 		while (location == null || location.length() <= 0) {
 			System.out.print("Please enter the branch location you wish to insert: ");
@@ -114,7 +115,7 @@ public class TerminalTransactions {
 		delegate.vehicleQuery(carType, location, TimeStartInterval, TimeEndInterval);
 	}
 	
-	private void handleInsertOption() {
+	private void handleInsertOption() throws SQLException {
 		String location = null;
 		while (location == null || location.length() <= 0) {
 			System.out.print("Please enter the branch name you wish to insert: ");
