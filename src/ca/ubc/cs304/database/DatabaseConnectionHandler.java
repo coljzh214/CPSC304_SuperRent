@@ -837,6 +837,9 @@ public class DatabaseConnectionHandler {
 			throw new Exception("Customer with invalid dlicense");
 		}
         VehicleModel vm = this.getVehicleForRent(vtname);
+        if (vm == null) {
+            throw new Exception("No available vehicles found ");
+        }
         String str = "INSERT INTO rental VALUES (?,?,?,?,?,?,?,?)";
         PreparedStatement ps = connection.prepareStatement(str);
         ps.setInt(1, vm.getVlicense());
@@ -960,37 +963,6 @@ public class DatabaseConnectionHandler {
 		return model;
 	}
 
-//	public RentalModel getRental(int rid) {
-//		RentalModel model = null;
-//		try {
-//			String str = "SELECT r.vlicense " +
-//								"FROM rental r, vehicle v " +
-//								"WHERE rid = ? AND r.vlicense = v.vlicense";
-//			PreparedStatement ps = connection.prepareStatement(str);
-//			ps.setInt(1, rid);
-//			ResultSet rs = ps.executeQuery();
-//
-//			while(rs.next()) {
-//				model = new RentalModel(rs.getInt("rid"),
-//						rs.getInt("vlicense"),
-//						rs.getInt("dlicense"),
-//						rs.getInt("confNo"),
-//						rs.getDate("fromDate"),
-//						rs.getDate("toDate"),
-//						rs.getInt("odometer"),
-//						rs.getString("cardName"),
-//						rs.getInt("location"),
-//						rs.getDate("city"));
-//			}
-//
-//			rs.close();
-//			ps.close();
-//		} catch (SQLException e) {
-//			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-//		}
-//		return model;
-//	}
-
 	public ReportModel generateRentalReport() throws SQLException {
 		List l1 = new ArrayList();
 		List l2 = new ArrayList();
@@ -998,6 +970,7 @@ public class DatabaseConnectionHandler {
 		List l4 = new ArrayList();
 		long millis = System.currentTimeMillis();
 		java.sql.Date currentDate = new java.sql.Date(millis);
+
         String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, r.confNo, " +
                 "r.fromDate, r.toDate " +
                 "FROM vehicle v, rental r " +

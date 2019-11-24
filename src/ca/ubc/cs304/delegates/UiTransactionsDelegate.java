@@ -1,6 +1,6 @@
 package ca.ubc.cs304.delegates;
 
-import ca.ubc.cs304.model.BranchModel;
+import ca.ubc.cs304.model.*;
 
 import java.sql.SQLException;
 
@@ -19,6 +19,15 @@ public interface UiTransactionsDelegate {
 	public void showBranch() throws SQLException;
     // public void updateBranch(int branchId, String name);
     public void vehicleQuery(String carType, String location, String startDate, String endDate) throws Exception;
+	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception;
+	public RentalModel processRentalwithoutReservation(String vtname, int dlicense, String fromDateString, String toDateString,
+													   String cardName, int cardNo, String expDateString) throws Exception;
+	public RentReturnModel processReturn(int rid, String returnDateString, int odometer, String fullTank) throws Exception;
+	public ReportModel generateRentalReport() throws SQLException;
+	public BranchReportModel generateRentalReport(String location, String city) throws SQLException;
+	public ReportModel generateReturnReport() throws SQLException;
+	public BranchReportModel generateReturnReport(String location, String city) throws SQLException;
+	public String[] getBranches();
 	
 	public void uiTransactionsFinished();
 }

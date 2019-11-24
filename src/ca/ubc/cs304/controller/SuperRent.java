@@ -4,13 +4,13 @@ import ca.ubc.cs304.database.DatabaseConnectionHandler;
 import ca.ubc.cs304.delegates.LoginWindowDelegate;
 import ca.ubc.cs304.delegates.TerminalTransactionsDelegate;
 import ca.ubc.cs304.delegates.UiTransactionsDelegate;
-import ca.ubc.cs304.model.BranchModel;
-import ca.ubc.cs304.model.VehicleModel;
+import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
 import ca.ubc.cs304.ui.UiTransactions;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * This is the main controller class that will orchestrate everything.
@@ -142,6 +142,51 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
     		return;
 		}
 
+	}
+
+	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {
+    	return dbHandler.processRentalWithReservation(confNo, cardName, cardNo, expDateString);
+	}
+
+	public RentalModel processRentalwithoutReservation(String vtname, int dlicense, String fromDateString, String toDateString,
+													   String cardName, int cardNo, String expDateString) throws Exception {
+		return dbHandler.processRentalWithoutReservation(vtname, dlicense, fromDateString, toDateString, cardName, cardNo, expDateString);
+	}
+
+	public RentReturnModel processReturn(int rid, String returnDateString, int odometer, String fullTank) throws Exception {
+    	return dbHandler.processReturn(rid, returnDateString, odometer, fullTank);
+    }
+
+    public ReportModel generateRentalReport() throws SQLException {
+    	return dbHandler.generateRentalReport();
+	}
+
+	public BranchReportModel generateRentalReport(String location, String city) throws SQLException {
+    	return dbHandler.generateReturnReport(location, city);
+	}
+
+	public ReportModel generateReturnReport() throws SQLException {
+		return dbHandler.generateReturnReport();
+	}
+
+	public BranchReportModel generateReturnReport(String location, String city) throws SQLException {
+		return dbHandler.generateReturnReport(location, city);
+	}
+
+	public String[] getBranches() {
+    	try {
+			ArrayList<String> result = new ArrayList<String>();
+			result.add("");
+			BranchModel[] models = dbHandler.getBranchInfo();
+			for (BranchModel m: models) {
+				result.add(m.getLocation() + "-" + m.getCity());
+			}
+			return result.toArray(new String[result.size()]);
+		} catch (SQLException e) {
+			ArrayList<String> result = new ArrayList<String>();
+			result.add("");
+    		return result.toArray(new String[result.size()]);
+		}
 	}
 
 	/**
