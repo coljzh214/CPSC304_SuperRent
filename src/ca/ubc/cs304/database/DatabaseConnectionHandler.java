@@ -913,7 +913,6 @@ public class DatabaseConnectionHandler {
 	public RentReturnModel processReturn(int rid, String returnDateString, int odometer, String fullTank) throws Exception {
 		java.sql.Date returnDate = Date.valueOf(returnDateString);
         ReturnInfoModel rm;
-        VehicleModel vm = null;
 
         rm = this.getReturnInfo(rid);
         if (rm == null) {
@@ -934,7 +933,7 @@ public class DatabaseConnectionHandler {
         ps.executeUpdate();
         connection.commit();
         ps.close();
-        this.updateVehicleStatus("available", odometer, vm.getVlicense());
+        this.updateVehicleStatus("available", odometer, rm.getVlicense());
 
         return new RentReturnModel(rid, returnDate, odometer, fullTank, value, days, rm.getDrate());
 	}
@@ -944,7 +943,8 @@ public class DatabaseConnectionHandler {
         String str = "SELECT v.vlicense, vt.wrate, vt.drate, vt.hrate, r.fromDate, r.toDate " +
                         "FROM vehicle v, rental r, vehicleType vt " +
                         "WHERE v.vlicense = r.vlicense AND v.vtname = vt.vtname " +
-                        "AND r.rid = ? AND status = 'rented' ";
+                        "AND r.rid = ? AND v.status = 'rented' ";
+        // String s = "SELECT v.vlicense, vt.wrate, vt.drate, vt.hrate, r.fromDate, r.toDate FROM vehicle v, rental r, vehicleType vt WHERE v.vlicense = r.vlicense AND v.vtname = vt.vtname AND r.rid = ? ";
         PreparedStatement ps = connection.prepareStatement(str);
         ps.setInt(1, rid);
         ResultSet rs = ps.executeQuery();
@@ -954,8 +954,8 @@ public class DatabaseConnectionHandler {
                     rs.getInt("wrate"),
                     rs.getInt("drate"),
                     rs.getInt("hrate"),
-                    rs.getDate("hrate"),
-                    rs.getDate("hrate")
+                    rs.getDate("fromDate"),
+                    rs.getDate("toDate")
             );
         }
         rs.close();
