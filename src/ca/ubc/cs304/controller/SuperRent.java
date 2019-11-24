@@ -137,6 +137,10 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 			}
 	}
 
+	public ReservationModel processReservation() {
+		return null;
+	}
+
 	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {
     	return dbHandler.processRentalWithReservation(confNo, cardName, cardNo, expDateString);
 	}
