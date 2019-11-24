@@ -11,21 +11,20 @@ import ca.ubc.cs304.model.RentalModel;
 
 public class RentReceiptView {
 
- public RentReceiptView() {
+ public RentReceiptView(RentalModel rentModel) {
     JFrame parent = new JFrame();
     final JDialog dialog = new JDialog(parent,"TRANSACTION RECEIPT");
     JTextPane textPane = new JTextPane();
     textPane.setText(   
-        "Reservation Confirmation Number: " + "rentModel.getRid()" + "\n\n" +
-        "Vehicle ID: " + "rentModel.getVlicense()" + "\n\n" +
-        "Drivers License: " + "rentModel.getDlicense()" + "\n\n" +
-        "Cell Phone: " + "rentModel.getConfNo()" + "\n\n" +
-        "From Date: " + "rentmodel.getFromDate()" + " To Date: " + "rentmodel.getToDate()" + "\n\n" +
-        "From Time: " + "rentmodel.getFromTime()" + " To Time: " + "rentmodel.getToTime()" + "\n\n" +
-        "Odometer: " + "rentmodel.getOdometer()" + "\n\n" +
-        "Card Name: " + "rentmodel.getCardName()" + "\n\n" +
-        "Card Number: " + "rentmodel.getCardNo()" + "\n\n" +
-        "Exipry Date: " + "rentmodel.getExpDate()" + "\n\n"
+        "Reservation Confirmation Number: " + rentModel.getRid() + "\n\n" +
+        "Vehicle ID: " + rentModel.getVlicense() + "\n\n" +
+        "Drivers License: " + rentModel.getDlicense() + "\n\n" +
+        "Cell Phone: " + rentModel.getConfNo() + "\n\n" +
+        "From Date: " + rentModel.getFromDate() + " To Date: " + rentModel.getToDate() + "\n\n" +
+        "Odometer: " + rentModel.getOdometer() + "\n\n" +
+        "Card Name: " + rentModel.getCardName() + "\n\n" +
+        "Card Number: " + rentModel.getCardNo() + "\n\n" +
+        "Exipry Date: " + rentModel.getExpDate() + "\n\n"
     );
     textPane.setEnabled(false);
     textPane.setDisabledTextColor(Color.BLACK);
