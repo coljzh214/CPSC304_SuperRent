@@ -176,7 +176,7 @@ public class UiTransactions extends JFrame implements ActionListener {
         try {
 			String command = e.getActionCommand();
             if (command == "ViewVehicle") {
-                VehicleModel[] m = delegate.vehicleQuery((String) this.comboBoxs.get(0).getSelectedItem(), this.textFields.get(0).getText(), 
+                VehicleModel[] m = delegate.vehicleQuery((String) this.comboBoxs.get(0).getSelectedItem(), this.textFields.get(0).getText(),
                 this.datePickers.get(0).getJFormattedTextField().getText(), this.datePickers.get(1).getJFormattedTextField().getText());
                 new TableView(m);
             } else if (command == "ReserveVehicle") {

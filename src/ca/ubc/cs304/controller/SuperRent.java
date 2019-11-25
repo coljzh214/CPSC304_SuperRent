@@ -19,83 +19,83 @@ import java.util.ArrayList;
  * This is the main controller class that will orchestrate everything.
  */
 public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
-	private DatabaseConnectionHandler dbHandler = null;
-	private LoginWindow loginWindow = null;
+    private DatabaseConnectionHandler dbHandler = null;
+    private LoginWindow loginWindow = null;
 
-	public SuperRent() {
-		dbHandler = new DatabaseConnectionHandler();
-	}
-	
-	private void init() {
-		loginWindow = new LoginWindow();
-		loginWindow.showFrame(this);
-	}
-	
-	/**
-	 * LoginWindowDelegate Implementation
-	 * 
+    public SuperRent() {
+        dbHandler = new DatabaseConnectionHandler();
+    }
+
+    private void init() {
+        loginWindow = new LoginWindow();
+        loginWindow.showFrame(this);
+    }
+
+    /**
+     * LoginWindowDelegate Implementation
+     * <p>
      * connects to Oracle database with supplied username and password
-     */ 
-	public void login(String username, String password) {
-		boolean didConnect = dbHandler.login(username, password);
+     */
+    public void login(String username, String password) {
+        boolean didConnect = dbHandler.login(username, password);
 
-		if (didConnect) {
-			// Once connected, remove login window and start text transaction flow
-			loginWindow.dispose();
+        if (didConnect) {
+            // Once connected, remove login window and start text transaction flow
+            loginWindow.dispose();
 
-			UiTransactions transaction = new UiTransactions();
-			//TerminalTransactions transaction = new TerminalTransactions();
-			transaction.showMainMenu(this);
-		} else {
-			loginWindow.handleLoginFailed();
+            UiTransactions transaction = new UiTransactions();
+            //TerminalTransactions transaction = new TerminalTransactions();
+            transaction.showMainMenu(this);
+        } else {
+            loginWindow.handleLoginFailed();
 
-			if (loginWindow.hasReachedMaxLoginAttempts()) {
-				loginWindow.dispose();
-				System.out.println("You have exceeded your number of allowed attempts");
-				System.exit(-1);
-			}
-		}
-	}
-	
-	/**
-	 * TermainalTransactionsDelegate Implementation
-	 * 
-	 * Insert a branch with the given info
-	 */
+            if (loginWindow.hasReachedMaxLoginAttempts()) {
+                loginWindow.dispose();
+                System.out.println("You have exceeded your number of allowed attempts");
+                System.exit(-1);
+            }
+        }
+    }
+
+    /**
+     * TermainalTransactionsDelegate Implementation
+     * <p>
+     * Insert a branch with the given info
+     */
     public void insertBranch(BranchModel model) throws SQLException {
-    	dbHandler.insertBranch(model);
+        dbHandler.insertBranch(model);
     }
 
     /**
-	 * TermainalTransactionsDelegate Implementation
-	 * 
-	 * Delete branch with given branch ID.
-	 */ 
+     * TermainalTransactionsDelegate Implementation
+     * <p>
+     * Delete branch with given branch ID.
+     */
     public void deleteBranch(String location, String city) throws SQLException {
-    	dbHandler.deleteBranch(location, city);
-    }
-    
-    /**
-	 * TermainalTransactionsDelegate Implementation
-	 * 
-	 * Update the branch name for a specific ID
-	 */
-
-	public void updateBranch(String location, String city, BranchModel model) throws Exception{
-    	dbHandler.updateBranch(location, city, model);
+        dbHandler.deleteBranch(location, city);
     }
 
     /**
-	 * TermainalTransactionsDelegate Implementation
-	 * 
-	 * Displays information about varies bank branches.
-	 */
+     * TermainalTransactionsDelegate Implementation
+     * <p>
+     * Update the branch name for a specific ID
+     */
+
+    public void updateBranch(String location, String city, BranchModel model) throws Exception {
+        dbHandler.updateBranch(location, city, model);
+    }
+
+    /**
+     * TermainalTransactionsDelegate Implementation
+     * <p>
+     * Displays information about varies bank branches.
+     */
     public void showBranch() throws SQLException {
-    	BranchModel[] models = dbHandler.getBranchInfo();
-		System.out.printf("There are " + models.length + " results");
-		System.out.println();
-    	for (int i = 0; i < models.length; i++) {
-    		BranchModel model = models[i];
+        BranchModel[] models = dbHandler.getBranchInfo();
+        System.out.printf("There are " + models.length + " results");
+        System.out.println();
+        for (int i = 0; i < models.length; i++) {
+            BranchModel model = models[i];
 
     		// simplified output formatting; truncation may occur
     		System.out.printf("%-10.10s", model.getLocation());
@@ -103,54 +103,55 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
     		System.out.println();
     	}
     }
-	
+
     /**
-	 * TerminalTransactionsDelegate Implementation
-	 * 
-     * The TerminalTransaction instance tells us that it is done with what it's 
+     * TerminalTransactionsDelegate Implementation
+     * <p>
+     * The TerminalTransaction instance tells us that it is done with what it's
      * doing so we are cleaning up the connection since it's no longer needed.
-     */ 
+     */
     public void terminalTransactionsFinished() {
-    	dbHandler.close();
-    	dbHandler = null;
-    	
-    	System.exit(0);
+        dbHandler.close();
+        dbHandler = null;
+
+        System.exit(0);
     }
 
-	public String getConfirmationString(ReservationModel res, String location) throws Exception {
-    	String ret = "";
-		ret += "Confirmation Number: " + res.getConfNo() + "\n";
-		ret += "Location: " + location + "\n";
-		ret += "Vehicle Type: " + res.getVtname() + "\n";
-		ret += "Driver's license: " + res.getDlicense() + "\n";
-		CustomerModel[] cust = dbHandler.getCustomerInfo();
-		int phoneNumber = -1;
-		for (CustomerModel model : cust) {
-			if(model.getDlicense() == res.getDlicense()) {
-				phoneNumber = model.getPhonenumber();
-			}
-		}
-		ret += "Phone Number: " + phoneNumber + "\n";
-		ret += "From Date: " + res.getFromDate() + "\n";
-		ret += "to Date: " + res.getToDate() + "\n";
-		return ret;
-	}
+    public String getConfirmationString(ReservationModel res, String location) throws Exception {
+        String ret = "";
+        ret += "Confirmation Number: " + res.getConfNo() + "\n";
+        ret += "Location: " + location + "\n";
+        ret += "Vehicle Type: " + res.getVtname() + "\n";
+        ret += "Driver's license: " + res.getDlicense() + "\n";
+        CustomerModel[] cust = dbHandler.getCustomerInfo();
+        int phoneNumber = -1;
+        for (CustomerModel model : cust) {
+            if (model.getDlicense() == res.getDlicense()) {
+                phoneNumber = model.getPhonenumber();
+            }
+        }
+        ret += "Phone Number: " + phoneNumber + "\n";
+        ret += "From Date: " + res.getFromDate() + "\n";
+        ret += "to Date: " + res.getToDate() + "\n";
+        return ret;
+    }
 
-    public VehicleModel[] vehicleQuery(String carType, String location, String startDate, String endDate)  throws Exception {
-			return dbHandler.getVehicleQuery(carType, location, startDate, endDate);
-	}
+    public VehicleModel[] vehicleQuery(String carType, String location, String startDate, String endDate) throws Exception {
+        VehicleModel[] models = dbHandler.getVehicleQuery(carType, location, startDate, endDate);
+        return models;
+    }
 
-	public ReservationModel processReservation(String vtname, int dlicense, String fromDate, String toDate, int phoneNumber, String location) throws Exception {
+    public ReservationModel processReservation(String vtname, int dlicense, String fromDate, String toDate, int phoneNumber, String location) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date from = sdf.parse(fromDate);
         java.util.Date to = sdf.parse(toDate);
 
         java.sql.Date fromDateSQL = new Date(from.getTime());
         java.sql.Date toDateSQL = new Date(to.getTime());
-        ReservationModel res = new ReservationModel(vtname, dlicense, fromDateSQL , toDateSQL, dbHandler);
-        CustomerModel customer = new CustomerModel(dlicense, "", "" , phoneNumber);
-		return dbHandler.createReservation(res, customer, location);
-	}
+        ReservationModel res = new ReservationModel(vtname, dlicense, fromDateSQL, toDateSQL, dbHandler);
+        CustomerModel customer = new CustomerModel(dlicense, "", "", phoneNumber);
+        return dbHandler.createReservation(res, customer, location);
+    }
 
 	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {
     	return dbHandler.processRentalWithReservation(confNo, cardName, cardNo, expDateString);
@@ -197,44 +198,43 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 		}
 	}
 
-	/**
-	 * transaction returns vehicleTypes
-	 */
-	public String[] getVehicleTypes() {
-		try {
-			VehicleTypeModel[] models = dbHandler.getVehicleTypeInfo();
-			ArrayList<String> ret = new ArrayList<String>();
-			System.out.printf("There are " + models.length + " results");
-			System.out.println();
-			//add empty entry
-			ret.add("");
-			for (int i = 0; i < models.length; i++) {
-				VehicleTypeModel model = models[i];
-				ret.add(model.getVtname());
-			}
-			return ret.toArray(new String[ret.size()]);
-		} catch (SQLException e) {
-			String[] ret = {""};
-			return ret;
-		}
-	}
+    /**
+     * transaction returns vehicleTypes
+     */
+    public String[] getVehicleTypes() {
+        try {
+            VehicleTypeModel[] models = dbHandler.getVehicleTypeInfo();
+            ArrayList<String> ret = new ArrayList<String>();
+            System.out.printf("There are " + models.length + " results");
+            System.out.println();
+            //add empty entry
+            ret.add("");
+            for (int i = 0; i < models.length; i++) {
+                VehicleTypeModel model = models[i];
+                ret.add(model.getVtname());
+            }
+            return ret.toArray(new String[ret.size()]);
+        } catch (SQLException e) {
+            String[] ret = {""};
+            return ret;
+        }
+    }
 
 
+    /**
+     * Main method called at launch time
+     */
+    public static void main(String args[]) {
+        SuperRent SuperRent = new SuperRent();
+        SuperRent.init();
+    }
 
-	/**
-	 * Main method called at launch time
-	 */
-	public static void main(String args[]) {
-		SuperRent SuperRent = new SuperRent();
-		SuperRent.init();
-	}
+    public void uiTransactionsFinished() {
+        dbHandler.close();
+        dbHandler = null;
 
-	public void uiTransactionsFinished() {
-    	dbHandler.close();
-    	dbHandler = null;
-    	
-    	System.exit(0);
-	}
+        System.exit(0);
+    }
 
 
 }
