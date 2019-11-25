@@ -27,6 +27,10 @@ public class ReportTableView {
         JScrollPane scrollerB = createTable(reportModel.b, columnNames[1]);
         JScrollPane scrollerC = createTable(reportModel.c, columnNames[2]);
         JScrollPane scrollerD = createTable(reportModel.d, columnNames[3]);
+        scrollerA.setPreferredSize(new Dimension(800, 403));
+        scrollerB.setPreferredSize(new Dimension(800, 403));
+        scrollerC.setPreferredSize(new Dimension(800, 403));
+        scrollerD.setPreferredSize(new Dimension(800, 403));
         JLabel tableALabel;
         JLabel tableBLabel;
         JLabel tableCLabel;

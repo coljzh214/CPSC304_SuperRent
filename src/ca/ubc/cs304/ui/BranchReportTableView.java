@@ -25,9 +25,12 @@ public class BranchReportTableView {
     }
 
     public BranchReportTableView(BranchReportModel reportModel, String[][] columnNames, String type) {
-        JScrollPane scrollerA = createTable(reportModel.a, columnNames[0]);
+        JScrollPane scrollerA = createTable(reportModel.c, columnNames[2]);
         JScrollPane scrollerB = createTable(reportModel.b, columnNames[1]);
-        JScrollPane scrollerC = createTable(reportModel.c, columnNames[2]);
+        JScrollPane scrollerC = createTable(reportModel.a, columnNames[0]);
+        scrollerA.setPreferredSize(new Dimension(600, 403));
+        scrollerB.setPreferredSize(new Dimension(600, 403));
+        scrollerC.setPreferredSize(new Dimension(1200, 403));
         JLabel tableALabel;
         JLabel tableBLabel;
         JLabel tableCLabel;
@@ -60,15 +63,13 @@ public class BranchReportTableView {
         gb.setConstraints(scrollerB, c);
         panel.add(scrollerB);
         // adding the labels
-        c.gridwidth = GridBagConstraints.RELATIVE;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         gb.setConstraints(tableCLabel, c);
         panel.add(tableCLabel);
-        c.gridwidth = GridBagConstraints.REMAINDER;
         // adding the table
-        c.gridwidth = GridBagConstraints.RELATIVE;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         gb.setConstraints(scrollerC, c);
         panel.add(scrollerC);
-        c.gridwidth = GridBagConstraints.REMAINDER;
 
         JFrame frame = new JFrame();
         frame.getContentPane().add(panel);
