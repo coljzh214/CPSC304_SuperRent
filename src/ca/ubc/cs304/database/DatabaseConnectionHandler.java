@@ -28,6 +28,28 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public String[] getAbstractTableInfo(String tableName) {
+        try {
+            ArrayList<String> ret = new ArrayList<String>();
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM ?");
+            ps.setString(1, tableName);
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                // get column name and add to return value
+                ret.add(rsmd.getColumnName(i + 1));
+            }
+
+            connection.commit();
+            ps.close();
+            return ret.toArray(new String[ret.size()]);
+        } catch (SQLException e) {
+            String[] ret = {};
+            return ret;
+        }
+    }
+
     public void close() {
         try {
             if (connection != null) {
@@ -52,6 +74,26 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             return false;
+        }
+    }
+    public int getNewConfNo() {
+        try{
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("select res_seq.nextval as val from dual");
+            int ret;
+
+            // display column names;
+            if (rs.next()) {
+                 ret = rs.getInt("val");
+            } else {
+                throw new SQLException("confNo could not be generated");
+            }
+
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException e ) {
+            return -1;
         }
     }
 
@@ -533,7 +575,7 @@ public class DatabaseConnectionHandler {
         PreparedStatement ps = connection.prepareStatement("INSERT INTO Reservation VALUES (?,?,?,?,?)");
         ps.setInt(1, model.getConfNo());
         ps.setString(2, model.getVtname());
-        // ps.setInt(3, model.getPhonenumber());
+        ps.setInt(3, model.getDlicense());
         ps.setDate(4, model.getFromDate());
         ps.setDate(5, model.getToDate());
 
@@ -721,12 +763,12 @@ public class DatabaseConnectionHandler {
         return;
     }
 
-    public ReservationModel createReservation(ReservationModel res, CustomerModel Customer) throws Exception, SQLException {
+    public ReservationModel createReservation(ReservationModel res, CustomerModel Customer, String location) throws Exception, SQLException {
         Statement stmt = connection.createStatement();
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM Customer WHERE dlicense = ?");
         ps.setInt(1, Customer.getDlicense());
 
-        VehicleModel[] availablevehicles = getVehicleQuery(res.getVtname(), "", res.getFromDate().toString(), res.getToDate().toString());
+        VehicleModel[] availablevehicles = getVehicleQuery(res.getVtname(), location, res.getFromDate().toString(), res.getToDate().toString());
         if (availablevehicles.length <= 0) {
             throw new Exception("There are no vehicles of that type available");
         }

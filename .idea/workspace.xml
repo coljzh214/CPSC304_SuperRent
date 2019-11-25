@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="">
+    <list default="true" id="b0d6d9ff-f0cc-4d76-b4b7-fdf025eea5b9" name="Default Changelist" comment="added model">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/controller/SuperRent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/controller/SuperRent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/UiTransactionsDelegate.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/delegates/UiTransactionsDelegate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/BranchModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/BranchModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/CustomerModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/CustomerModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/RentReturnModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/RentReturnModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/RentalModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/RentalModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/RentalReportModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/ReservationModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/ReservationModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/ReturnReportModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/VehicleModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/VehicleModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/VehicleTypeModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/model/VehicleTypeModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/UiTransactions$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/UiTransactions$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/UiTransactions.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/ca/ubc/cs304/ui/UiTransactions.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/controller/SuperRent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/controller/SuperRent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentReturnModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/RentReturnModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/delegates/UiTransactionsDelegate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/delegates/UiTransactionsDelegate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReservationModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/model/ReservationModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cs304/ui/UiTransactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cs304/ui/UiTransactions.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +55,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="UiBranch" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1TpXlqdaFuWBR1g84rhVS1XDNoB" />
@@ -54,10 +75,16 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ca.ubc.cs304.model" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -137,6 +164,7 @@
       <updated>1574158164814</updated>
       <workItem from="1574158171979" duration="2232000" />
       <workItem from="1574212242161" duration="37235000" />
+      <workItem from="1574643087043" duration="2754000" />
     </task>
     <task id="LOCAL-00001" summary="added sql script">
       <created>1574366855453</created>
@@ -173,7 +201,21 @@
       <option name="project" value="LOCAL" />
       <updated>1574592270449</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added model">
+      <created>1574629187596</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1574629187597</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added model">
+      <created>1574636992013</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1574636992013</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +233,21 @@
         </entry>
       </map>
     </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="UiBranch" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added sql script" />
@@ -198,20 +255,76 @@
     <MESSAGE value="Customer Transactions" />
     <MESSAGE value="Database Management Methods" />
     <MESSAGE value="omegalul" />
-    <option name="LAST_COMMIT_MESSAGE" value="omegalul" />
+    <MESSAGE value="added model" />
+    <option name="LAST_COMMIT_MESSAGE" value="added model" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>452</line>
+          <line>494</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
-          <line>135</line>
+          <line>177</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/ui/UiTransactions.java</url>
+          <line>186</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>766</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>527</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>781</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>95</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>780</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>783</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>771</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/database/DatabaseConnectionHandler.java</url>
+          <line>579</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/ui/UiTransactions.java</url>
+          <line>182</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ca/ubc/cs304/controller/SuperRent.java</url>
+          <line>162</line>
+          <option name="timeStamp" value="36" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

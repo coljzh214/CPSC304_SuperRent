@@ -3,7 +3,7 @@ package ca.ubc.cs304.model;
 import java.sql.Date;
 import java.sql.Time;
 
-public class RentalModel {
+public class RentalModel extends IModel{
     private final int rid;
     private final int vlicense;
     private final int dlicense;
@@ -14,6 +14,13 @@ public class RentalModel {
     private final String cardName;
     private final int cardNo;
     private final Date expDate;
+
+    @Override
+    public String[] getTuple() {
+        String[] ret = {Integer.toString(this.rid), Integer.toString(this.vlicense), Integer.toString(this.dlicense), Integer.toString(confNo), fromDate.toString(),
+            toDate.toString(), Integer.toString(this.odometer), cardName, Integer.toString(cardNo), expDate.toString()};
+        return ret;
+    }
 
     public RentalModel(int rid, int vlicense, int dlicense, int confNo, Date fromDate, Date toDate,
                        int odometer, String cardName, int cardNo, Date expDate) {
@@ -27,6 +34,7 @@ public class RentalModel {
         this.cardName = cardName;
         this.cardNo = cardNo;
         this.expDate = expDate;
+        this.table_name = "Rental";
     }
 
     public int getRid() {

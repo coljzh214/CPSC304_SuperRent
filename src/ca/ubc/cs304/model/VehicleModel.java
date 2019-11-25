@@ -1,6 +1,6 @@
 package ca.ubc.cs304.model;
 
-public class VehicleModel {
+public class VehicleModel extends IModel {
     private final int vlicense;
     private final int vid;
     private final String make;
@@ -12,6 +12,13 @@ public class VehicleModel {
     private final String vtname;
     private final String location;
     private final String city;
+
+    @Override
+    public String[] getTuple() {
+        String[] ret = {Integer.toString(this.vlicense), Integer.toString(this.vid), make, model, Integer.toString(year), color,
+                Integer.toString(this.odometer), status, vtname, location, city};
+        return ret;
+    }
 
     public VehicleModel(int vlicense, int vid, String make, String model, int year, String color, int odometer,
                         String status, String vtname, String location, String city) {
@@ -26,6 +33,7 @@ public class VehicleModel {
         this.vtname = vtname;
         this.location = location;
         this.city = city;
+        table_name = "Vehicle";
     }
 
     public int getVlicense() {

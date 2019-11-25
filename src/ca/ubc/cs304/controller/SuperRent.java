@@ -8,14 +8,17 @@ import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
 import ca.ubc.cs304.ui.UiTransactions;
+import sun.java2d.pipe.SpanShapeRenderer;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
  * This is the main controller class that will orchestrate everything.
  */
-public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDelegate, UiTransactionsDelegate {
+public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 	private DatabaseConnectionHandler dbHandler = null;
 	private LoginWindow loginWindow = null;
 
@@ -78,9 +81,9 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	 * Update the branch name for a specific ID
 	 */
 
-//    public void updateBranch(int branchId, String name) {
-//    	dbHandler.updateBranch(branchId, name);
-//    }
+	public void updateBranch(String location, String city, BranchModel model) throws Exception{
+    	dbHandler.updateBranch(location, city, model);
+    }
 
     /**
 	 * TermainalTransactionsDelegate Implementation
@@ -114,8 +117,26 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
     	System.exit(0);
     }
 
-    public void vehicleQuery(String carType, String location, String startDate, String endDate) {
-    	try{
+	public String getConfirmationString(ReservationModel res, String location) throws Exception {
+    	String ret = "";
+		ret += "Confirmation Number: " + res.getConfNo() + "\n";
+		ret += "Location: " + location + "\n";
+		ret += "Vehicle Type: " + res.getVtname() + "\n";
+		ret += "Driver's license: " + res.getDlicense() + "\n";
+		CustomerModel[] cust = dbHandler.getCustomerInfo();
+		int phoneNumber = -1;
+		for (CustomerModel model : cust) {
+			if(model.getDlicense() == res.getDlicense()) {
+				phoneNumber = model.getPhonenumber();
+			}
+		}
+		ret += "Phone Number: " + phoneNumber + "\n";
+		ret += "From Date: " + res.getFromDate() + "\n";
+		ret += "to Date: " + res.getToDate() + "\n";
+		return ret;
+	}
+
+    public void vehicleQuery(String carType, String location, String startDate, String endDate)  throws Exception {
 			VehicleModel[] models = dbHandler.getVehicleQuery(carType, location, startDate, endDate);
 			System.out.println();
 			for (int i = 0; i < models.length; i++) {
@@ -136,12 +157,18 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 					System.out.printf("%-15.15s", model.getMake());
 				}
 			}
-			// rest of them
-		} catch (Exception e) {
-    		System.out.println("Invalid Arguements for Query");
-    		return;
-		}
+	}
 
+	public ReservationModel processReservation(String vtname, int dlicense, String fromDate, String toDate, int phoneNumber, String location) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date from = sdf.parse(fromDate);
+        java.util.Date to = sdf.parse(toDate);
+
+        java.sql.Date fromDateSQL = new Date(from.getTime());
+        java.sql.Date toDateSQL = new Date(to.getTime());
+        ReservationModel res = new ReservationModel(vtname, dlicense, fromDateSQL , toDateSQL, dbHandler);
+        CustomerModel customer = new CustomerModel(dlicense, "", "" , phoneNumber);
+		return dbHandler.createReservation(res, customer, location);
 	}
 
 	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {
@@ -190,6 +217,30 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
 	}
 
 	/**
+	 * transaction returns vehicleTypes
+	 */
+	public String[] getVehicleTypes() {
+		try {
+			VehicleTypeModel[] models = dbHandler.getVehicleTypeInfo();
+			ArrayList<String> ret = new ArrayList<String>();
+			System.out.printf("There are " + models.length + " results");
+			System.out.println();
+			//add empty entry
+			ret.add("");
+			for (int i = 0; i < models.length; i++) {
+				VehicleTypeModel model = models[i];
+				ret.add(model.getVtname());
+			}
+			return ret.toArray(new String[ret.size()]);
+		} catch (SQLException e) {
+			String[] ret = {""};
+			return ret;
+		}
+	}
+
+
+
+	/**
 	 * Main method called at launch time
 	 */
 	public static void main(String args[]) {
@@ -203,4 +254,6 @@ public class SuperRent implements LoginWindowDelegate, TerminalTransactionsDeleg
     	
     	System.exit(0);
 	}
+
+
 }

@@ -13,16 +13,16 @@ import ca.ubc.cs304.model.BranchModel;
  * The class is only responsible for handling terminal text inputs.
  */
 public class TerminalTransactions {
-	private static final String EXCEPTION_TAG = "[EXCEPTION]";
-	private static final String WARNING_TAG = "[WARNING]";
-	private static final int INVALID_INPUT = Integer.MIN_VALUE;
-	private static final int EMPTY_INPUT = 0;
+    private static final String EXCEPTION_TAG = "[EXCEPTION]";
+    private static final String WARNING_TAG = "[WARNING]";
+    private static final int INVALID_INPUT = Integer.MIN_VALUE;
+    private static final int EMPTY_INPUT = 0;
 
-	private BufferedReader bufferedReader = null;
-	private TerminalTransactionsDelegate delegate = null;
+    private BufferedReader bufferedReader = null;
+    private TerminalTransactionsDelegate delegate = null;
 
-	public TerminalTransactions() {
-	}
+    public TerminalTransactions() {
+    }
 
 	/**
 	 * Displays simple text interface
@@ -43,7 +43,7 @@ public class TerminalTransactions {
 			System.out.println("6. CustomerQuery");
 			System.out.print("Please choose one of the above 5 options: ");
 
-			choice = readInteger(false);
+            choice = readInteger(false);
 
 			System.out.println(" ");
 
@@ -82,14 +82,17 @@ public class TerminalTransactions {
 			location = readLine().trim();
 		}
 
-		String city = null;
-		while (city == null || city.length() <= 0) {
-			System.out.print("Please enter the branch city you wish to insert: ");
-			city = readLine().trim();
-		}
+        String city = null;
+        while (city == null || city.length() <= 0) {
+            System.out.print("Please enter the branch city you wish to insert: ");
+            city = readLine().trim();
+        }
+        try {
+            delegate.deleteBranch(location, city);
+        } catch (Exception e) {
 
-		delegate.deleteBranch(location, city);
-	}
+        }
+    }
 
 	private void handleCustomerQuery() {
 		String location = null;
@@ -122,11 +125,11 @@ public class TerminalTransactions {
 			location = readLine().trim();
 		}
 
-		String city = null;
-		while (city == null || city.length() <= 0) {
-			System.out.print("Please enter the branch city you wish to insert: ");
-			city = readLine().trim();
-		}
+        String city = null;
+        while (city == null || city.length() <= 0) {
+            System.out.print("Please enter the branch city you wish to insert: ");
+            city = readLine().trim();
+        }
 
 		
 		BranchModel model = new BranchModel(location,
@@ -164,31 +167,31 @@ public class TerminalTransactions {
 //		delegate.updateBranch(id, name);
 //	}
 
-	private int readInteger(boolean allowEmpty) {
-		String line = null;
-		int input = INVALID_INPUT;
-		try {
-			line = bufferedReader.readLine();
-			input = Integer.parseInt(line);
-		} catch (IOException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		} catch (NumberFormatException e) {
-			if (allowEmpty && line.length() == 0) {
-				input = EMPTY_INPUT;
-			} else {
-				System.out.println(WARNING_TAG + " Your input was not an integer");
-			}
-		}
-		return input;
-	}
+    private int readInteger(boolean allowEmpty) {
+        String line = null;
+        int input = INVALID_INPUT;
+        try {
+            line = bufferedReader.readLine();
+            input = Integer.parseInt(line);
+        } catch (IOException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        } catch (NumberFormatException e) {
+            if (allowEmpty && line.length() == 0) {
+                input = EMPTY_INPUT;
+            } else {
+                System.out.println(WARNING_TAG + " Your input was not an integer");
+            }
+        }
+        return input;
+    }
 
-	private String readLine() {
-		String result = null;
-		try {
-			result = bufferedReader.readLine();
-		} catch (IOException e) {
-			System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-		}
-		return result;
-	}
+    private String readLine() {
+        String result = null;
+        try {
+            result = bufferedReader.readLine();
+        } catch (IOException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return result;
+    }
 }
