@@ -1009,220 +1009,204 @@ public class DatabaseConnectionHandler {
 	}
 
 	public ReportModel generateRentalReport() throws SQLException {
-		List l1 = new ArrayList();
-		List l2 = new ArrayList();
-		List l3 = new ArrayList();
-		List l4 = new ArrayList();
-		long millis = System.currentTimeMillis();
-		java.sql.Date currentDate = new java.sql.Date(millis);
+		ArrayList l1 = new ArrayList();
+        ArrayList l2 = new ArrayList();
+        ArrayList l3 = new ArrayList();
+        ArrayList l4 = new ArrayList();
 
-        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, r.confNo, " +
-                "r.fromDate, r.toDate " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? " +
-                "ORDER BY v.location, v.city, v.vtname";
+        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, r.confNo, r.fromDate, r.toDate " +
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "ORDER BY v.location, v.city, v.vtname";
         String select_str2 = "SELECT v.vtname, count(*) as count " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? " +
-                "GROUP BY v.vtname";
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "GROUP BY v.vtname";
         String select_str3 = "SELECT v.location, v.city, count(*) as count " +
-                "r.fromDate, r.toDate " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? " +
-                "GROUP BY v.location, v.city, v.vtname";
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "GROUP BY v.location, v.city";
         String select_str4 = "SELECT count(*) as count " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? ";
-        PreparedStatement ps1 = connection.prepareStatement(select_str1);
-        PreparedStatement ps2 = connection.prepareStatement(select_str2);
-        PreparedStatement ps3 = connection.prepareStatement(select_str3);
-        PreparedStatement ps4 = connection.prepareStatement(select_str4);
-        ps1.setDate(1, currentDate);
-        ps2.setDate(1, currentDate);
-        ps3.setDate(1, currentDate);
-        ps4.setDate(1, currentDate);
-        ResultSet rs1 = ps1.executeQuery();
-        ResultSet rs2 = ps2.executeQuery();
-        ResultSet rs3 = ps3.executeQuery();
-        ResultSet rs4 = ps4.executeQuery();
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) ";
+
+        Statement stmt1 = connection.createStatement();
+        Statement stmt2 = connection.createStatement();
+        Statement stmt3 = connection.createStatement();
+        Statement stmt4 = connection.createStatement();
+        ResultSet rs1 = stmt1.executeQuery(select_str1);
+        ResultSet rs2 = stmt2.executeQuery(select_str2);
+        ResultSet rs3 = stmt3.executeQuery(select_str3);
+        ResultSet rs4 = stmt4.executeQuery(select_str4);
+
         while (rs1.next()) {
-            Object[] o = {rs1.getString(0), rs1.getString(1), rs1.getString(2),
-                    rs1.getString(3), rs1.getInt(4), rs1.getInt(5), rs1.getInt(6),
-                    rs1.getDate(7), rs1.getDate(8)};
+            Object[] o = {rs1.getInt("rid"), rs1.getString("location"), rs1.getString("city"),
+                    rs1.getString("vtname"), rs1.getInt("vlicense"), rs1.getInt("dlicense"), rs1.getInt("confNo"),
+                    rs1.getDate("fromDate"), rs1.getDate("toDate")};
             l1.add(o);
         }
         while (rs2.next()) {
-            Object[] o = {rs1.getString(0), rs1.getInt(1)};
+            Object[] o = {rs2.getString("vtname"), rs2.getInt("count")};
             l2.add(o);
         }
         while (rs3.next()) {
-            Object[] o = {rs1.getString(0), rs1.getString(1), rs1.getInt(2)};
+            Object[] o = {rs3.getString("location"), rs3.getString("city"), rs3.getInt("count")};
             l3.add(o);
         }
         while (rs4.next()) {
-            Object[] o = {rs1.getInt(0)};
+            Object[] o = {rs4.getInt("count")};
             l4.add(o);
         }
-		return new ReportModel(l1, l2, l3 ,l4);
+
+		return new ReportModel(l1, l2, l3, l4);
 	}
 
 	public BranchReportModel generateRentalReport(String location, String city) throws SQLException {
-		List l1 = new ArrayList();
-		List l2 = new ArrayList();
-		List l3 = new ArrayList();
-		long millis = System.currentTimeMillis();
-		java.sql.Date currentDate = new java.sql.Date(millis);
-        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, r.confNo, " +
-                "r.fromDate, r.toDate " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? " +
-                "AND v.location = ? AND v.city = ? " +
-                "ORDER BY v.vtname";
+        ArrayList l1 = new ArrayList();
+        ArrayList l2 = new ArrayList();
+        ArrayList l3 = new ArrayList();
+
+        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, r.confNo, r.fromDate, r.toDate " +
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "AND v.location = ? AND v.city = ? " +
+                                "ORDER BY v.vtname";
         String select_str2 = "SELECT v.vtname, count(*) as count " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? " +
-                "AND v.location = ? AND v.city = ? " +
-                "GROUP BY v.vtname";
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "AND v.location = ? AND v.city = ? " +
+                                "GROUP BY v.vtname";
         String select_str3 = "SELECT count(*) as count " +
-                "FROM vehicle v, rental r " +
-                "WHERE r.vlicense = v.vlicense AND r.fromDate = ? " +
-                "AND v.location = ? AND v.city = ? ";
+                                "FROM vehicle v, rental r " +
+                                "WHERE r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "AND v.location = ? AND v.city = ?";
+
         PreparedStatement ps1 = connection.prepareStatement(select_str1);
         PreparedStatement ps2 = connection.prepareStatement(select_str2);
         PreparedStatement ps3 = connection.prepareStatement(select_str3);
-        ps1.setDate(1, currentDate);
-        ps1.setString(2, location);
-        ps1.setString(3, city);
-        ps2.setDate(1, currentDate);
-        ps2.setString(2, location);
-        ps2.setString(3, city);
-        ps3.setDate(1, currentDate);
-        ps3.setString(2, location);
-        ps3.setString(3, city);
+        ps1.setString(1, location);
+        ps1.setString(2, city);
+        ps2.setString(1, location);
+        ps2.setString(2, city);
+        ps3.setString(1, location);
+        ps3.setString(2, city);
         ResultSet rs1 = ps1.executeQuery();
         ResultSet rs2 = ps2.executeQuery();
         ResultSet rs3 = ps3.executeQuery();
+
         while (rs1.next()) {
-            Object[] o = {rs1.getString(0), rs1.getString(1), rs1.getString(2),
-                    rs1.getString(3), rs1.getInt(4), rs1.getInt(5), rs1.getInt(6),
-                    rs1.getDate(7), rs1.getDate(8)};
+            Object[] o = {rs1.getInt("rid"), rs1.getString("location"), rs1.getString("city"),
+                    rs1.getString("vtname"), rs1.getInt("vlicense"), rs1.getInt("dlicense"), rs1.getInt("confNo"),
+                    rs1.getDate("fromDate"), rs1.getDate("toDate")};
             l1.add(o);
         }
         while (rs2.next()) {
-            Object[] o = {rs1.getString(0), rs1.getInt(1)};
+            Object[] o = {rs2.getString("vtname"), rs2.getInt("count")};
             l2.add(o);
         }
         while (rs3.next()) {
-            Object[] o = {rs1.getInt(0)};
+            Object[] o = {rs3.getInt("count")};
             l3.add(o);
         }
 		return new BranchReportModel(l1, l2, l3);
 	}
 
 	public ReportModel generateReturnReport() throws SQLException {
-		List l1 = new ArrayList();
-		List l2 = new ArrayList();
-		List l3 = new ArrayList();
-		List l4 = new ArrayList();
-		long millis = System.currentTimeMillis();
-		java.sql.Date currentDate = new java.sql.Date(millis);
-        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, rt.returnDate, " +
-                "rt.value, rt.odometer, rt.fullTank " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? " +
-                "ORDER BY v.location, v.city, v.vtname";
-        String select_str2 = "SELECT v.vtname, count(*), sum(rt.value) " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? " +
-                "GROUP BY v.vtname";
-        String select_str3 = "SELECT v.location, v.city, count(*), sum(rt.value) " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? " +
-                "GROUP BY v.location, v.city";
-        String select_str4 = "SELECT count(*), sum(rt.value) " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? ";
-        PreparedStatement ps1 = connection.prepareStatement(select_str1);
-        PreparedStatement ps2 = connection.prepareStatement(select_str2);
-        PreparedStatement ps3 = connection.prepareStatement(select_str3);
-        PreparedStatement ps4 = connection.prepareStatement(select_str4);
-        ps1.setDate(1, currentDate);
-        ps2.setDate(1, currentDate);
-        ps3.setDate(1, currentDate);
-        ps4.setDate(1, currentDate);
-        ResultSet rs1 = ps1.executeQuery();
-        ResultSet rs2 = ps2.executeQuery();
-        ResultSet rs3 = ps3.executeQuery();
-        ResultSet rs4 = ps4.executeQuery();
+        ArrayList l1 = new ArrayList();
+        ArrayList l2 = new ArrayList();
+        ArrayList l3 = new ArrayList();
+        ArrayList l4 = new ArrayList();
+
+        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, rt.returnDate, rt.value, rt.odometer, rt.fullTank " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "ORDER BY v.location, v.city, v.vtname";
+        String select_str2 = "SELECT v.vtname, count(*) as count, sum(rt.value) as sum " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "GROUP BY v.vtname";
+        String select_str3 = "SELECT v.location, v.city, count(*) as count, sum(rt.value) as sum " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "GROUP BY v.location, v.city";
+        String select_str4 = "SELECT count(*) as count, sum(rt.value) as sum " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) ";
+
+        Statement stmt1 = connection.createStatement();
+        Statement stmt2 = connection.createStatement();
+        Statement stmt3 = connection.createStatement();
+        Statement stmt4 = connection.createStatement();
+        ResultSet rs1 = stmt1.executeQuery(select_str1);
+        ResultSet rs2 = stmt2.executeQuery(select_str2);
+        ResultSet rs3 = stmt3.executeQuery(select_str3);
+        ResultSet rs4 = stmt4.executeQuery(select_str4);
         while (rs1.next()) {
-            Object[] o = {rs1.getInt(0), rs1.getString(1), rs1.getString(2),
-                    rs1.getString(3), rs1.getInt(4), rs1.getInt(5), rs1.getDate(6),
-                    rs1.getInt(7), rs1.getInt(8), rs1.getString(9)};
+            Object[] o = {rs1.getInt("rid"), rs1.getString("location"), rs1.getString("city"),
+                    rs1.getString("vtname"), rs1.getInt("vlicense"), rs1.getInt("dlicense"), rs1.getDate("returnDate"),
+                    rs1.getInt("value"), rs1.getInt("odometer"), rs1.getString("fullTank")};
             l1.add(o);
         }
         while (rs2.next()) {
-            Object[] o = {rs1.getString(0), rs1.getInt(1), rs1.getInt(2)};
+            Object[] o = {rs2.getString("vtname"), rs2.getInt("count"), rs2.getInt("sum")};
             l2.add(o);
         }
         while (rs3.next()) {
-            Object[] o = {rs1.getString(0), rs1.getString(1), rs1.getInt(2), rs1.getInt(3)};
+            Object[] o = {rs3.getString("location"), rs3.getString("city"), rs3.getInt("count"), rs3.getInt("sum")};
             l3.add(o);
         }
         while (rs4.next()) {
-            Object[] o = {rs1.getInt(0), rs1.getInt(1)};
+            Object[] o = {rs4.getInt("count"), rs4.getInt("sum")};
             l4.add(o);
         }
 		return new ReportModel(l1, l2, l3, l4);
 	}
 
 	public BranchReportModel generateReturnReport(String location, String city) throws SQLException {
-		List l1 = new ArrayList();
-		List l2 = new ArrayList();
-		List l3 = new ArrayList();
-		long millis = System.currentTimeMillis();
-		java.sql.Date currentDate = new java.sql.Date(millis);
-        String select_str1 = "SELECT r.rid, v.vtname, v.vlicense, r.dlicense, rt.returnDate, " +
-                "rt.value, rt.odometer, rt.fullTank " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? " +
-                "AND v.location = ? AND v.city = ? " +
-                "ORDER BY v.vtname";
-        String select_str2 = "SELECT v.vtname, count(*), sum(rt.value) " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? " +
-                "AND v.location = ? AND v.city = ? " +
-                "GROUP BY v.vtname";
-        String select_str3 = "SELECT count(*), sum(rt.value) " +
-                "FROM vehicle v, rental r, rentreturn rt " +
-                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND rt.returnDate = ? " +
-                "AND v.location = ? AND v.city = ?";
+        ArrayList l1 = new ArrayList();
+        ArrayList l2 = new ArrayList();
+        ArrayList l3 = new ArrayList();
+
+        String select_str1 = "SELECT r.rid, v.location, v.city, v.vtname, v.vlicense, r.dlicense, rt.returnDate, rt.value, rt.odometer, rt.fullTank " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "AND v.location = ? AND v.city = ? " +
+                                "ORDER BY v.vtname";
+        String select_str2 = "SELECT v.vtname, count(*) as count, sum(rt.value) as sum " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "AND v.location = ? AND v.city = ? " +
+                                "GROUP BY v.vtname";
+        String select_str3 = "SELECT count(*) as count, sum(rt.value) as sum " +
+                                "FROM vehicle v, rental r, rentreturn rt " +
+                                "WHERE r.rid = rt.rid AND r.vlicense = v.vlicense AND r.fromDate = TRUNC(SYSDATE) " +
+                                "AND v.location = ? AND v.city = ?";
+
         PreparedStatement ps1 = connection.prepareStatement(select_str1);
         PreparedStatement ps2 = connection.prepareStatement(select_str2);
         PreparedStatement ps3 = connection.prepareStatement(select_str3);
-        ps1.setDate(1, currentDate);
-        ps1.setString(2, location);
-        ps1.setString(3, city);
-        ps2.setDate(1, currentDate);
-        ps2.setString(2, location);
-        ps2.setString(3, city);
-        ps3.setDate(1, currentDate);
-        ps3.setString(2, location);
-        ps3.setString(3, city);
+        ps1.setString(1, location);
+        ps1.setString(2, city);
+        ps2.setString(1, location);
+        ps2.setString(2, city);
+        ps3.setString(1, location);
+        ps3.setString(2, city);
         ResultSet rs1 = ps1.executeQuery();
         ResultSet rs2 = ps2.executeQuery();
         ResultSet rs3 = ps3.executeQuery();
+
         while (rs1.next()) {
-            Object[] o = {rs1.getInt(0), rs1.getString(1), rs1.getString(2),
-                    rs1.getString(3), rs1.getInt(4), rs1.getInt(5), rs1.getDate(6),
-                    rs1.getInt(7), rs1.getInt(8), rs1.getString(9)};
+            Object[] o = {rs1.getInt("rid"), rs1.getString("location"), rs1.getString("city"),
+                    rs1.getString("vtname"), rs1.getInt("vlicense"), rs1.getInt("dlicense"), rs1.getDate("returnDate"),
+                    rs1.getInt("value"), rs1.getInt("odometer"), rs1.getString("fullTank")};
             l1.add(o);
         }
         while (rs2.next()) {
-            Object[] o = {rs1.getString(0), rs1.getInt(1), rs1.getInt(2)};
+            Object[] o = {rs2.getString("vtname"), rs2.getInt("count"), rs2.getInt("sum")};
             l2.add(o);
         }
         while (rs3.next()) {
-            Object[] o = {rs1.getInt(0), rs1.getInt(1)};
+            Object[] o = {rs3.getInt("count"), rs3.getInt("sum")};
             l3.add(o);
         }
 		return new BranchReportModel(l1, l2, l3);

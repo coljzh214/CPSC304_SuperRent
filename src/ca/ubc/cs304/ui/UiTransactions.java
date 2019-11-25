@@ -209,10 +209,10 @@ public class UiTransactions extends JFrame implements ActionListener {
 			} else if (command == "ReportReturns") {
 				String text = this.comboBoxs.get(5).getSelectedItem().toString();
 				if (text == "") {
-					ReportModel m = delegate.generateRentalReport();
+					ReportModel m = delegate.generateReturnReport();
 				} else {
 					String[] branchInfo = text.split("-");
-					BranchReportModel m = delegate.generateRentalReport(branchInfo[0], branchInfo[1]);
+					BranchReportModel m = delegate.generateReturnReport(branchInfo[0], branchInfo[1]);
 				}
 			}
         }

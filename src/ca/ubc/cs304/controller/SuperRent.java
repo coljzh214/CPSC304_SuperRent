@@ -171,7 +171,7 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 	}
 
 	public BranchReportModel generateRentalReport(String location, String city) throws SQLException {
-    	return dbHandler.generateReturnReport(location, city);
+    	return dbHandler.generateRentalReport(location, city);
 	}
 
 	public ReportModel generateReturnReport() throws SQLException {
