@@ -8,7 +8,6 @@ import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
 import ca.ubc.cs304.ui.UiTransactions;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.sql.Date;
 import java.sql.SQLException;

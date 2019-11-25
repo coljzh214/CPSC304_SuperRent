@@ -462,6 +462,7 @@ public class DatabaseConnectionHandler {
         ArrayList<VehicleModel> result = new ArrayList<VehicleModel>();
         java.sql.Date endDate = null;
         java.sql.Date startDate = null;
+        java.sql.Date minDate = Date.valueOf("2000-01-01");
         try {
             if (startDateString != null && startDateString.length() > 0)
                 startDate = Date.valueOf(startDateString);
@@ -484,6 +485,8 @@ public class DatabaseConnectionHandler {
         }
 
         if (startDate != null && endDate != null) {
+            if (startDate.getTime() < minDate.getTime() || endDate.getTime() < minDate.getTime())
+                throw new IllegalArgumentException("StartDate and EndDate must be after 2000");
             if (startDate.getTime() > endDate.getTime()) {
                 throw new IllegalArgumentException("StartDate must be less than endDate");
             }
