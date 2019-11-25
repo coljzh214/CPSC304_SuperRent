@@ -197,7 +197,7 @@ public class UiTransactions extends JFrame implements ActionListener {
                         Integer.parseInt(this.formattedTextFields.get(7).getText().replaceAll(",", "")), (String) this.comboBoxs.get(3).getSelectedItem());
                 new ReturnReceiptView(m);
 			} else if (command == "ReportRentals") {
-            	String text = this.textFields.get(3).getText();
+            	String text = this.comboBoxs.get(4).getSelectedItem().toString();
 				if (text == "") {
 					ReportModel m = delegate.generateRentalReport();
 				} else {
@@ -205,7 +205,7 @@ public class UiTransactions extends JFrame implements ActionListener {
 					BranchReportModel m = delegate.generateRentalReport(branchInfo[0], branchInfo[1]);
 				}
 			} else if (command == "ReportReturns") {
-				String text = this.textFields.get(4).getText();
+				String text = this.comboBoxs.get(5).getSelectedItem().toString();
 				if (text == "") {
 					ReportModel m = delegate.generateRentalReport();
 				} else {
