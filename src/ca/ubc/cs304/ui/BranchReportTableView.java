@@ -9,28 +9,29 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
+import ca.ubc.cs304.model.BranchModel;
+import ca.ubc.cs304.model.BranchReportModel;
 import ca.ubc.cs304.model.ReportModel;
- 
-public class ReportTableView {
+
+public class BranchReportTableView {
 
     static JScrollPane createTable(List list, String[] columnNames) {
-        Object[][] array = new Object[list.size()][columnNames.length];
+        Object[][] array = new String[list.size()][];
         for (int i = 0; i < list.size(); i++) {
-            array[i] = (Object[]) list.get(i);
+            ArrayList<Object> row = (ArrayList<Object>) list.get(i);
+            array[i] = row.toArray(new String[row.size()]);
         }
         JTable table = new JTable(array, columnNames);
         return new JScrollPane(table);
     }
 
-    public ReportTableView(ReportModel reportModel, String[][] columnNames) {
+    public BranchReportTableView(BranchReportModel reportModel, String[][] columnNames) {
         JScrollPane scrollerA = createTable(reportModel.a, columnNames[0]);
         JScrollPane scrollerB = createTable(reportModel.b, columnNames[1]);
         JScrollPane scrollerC = createTable(reportModel.c, columnNames[2]);
-        JScrollPane scrollerD = createTable(reportModel.d, columnNames[3]);
         JLabel tableALabel = new JLabel("IDK");
         JLabel tableBLabel = new JLabel("IDK");
         JLabel tableCLabel = new JLabel("IDK");
-        JLabel tableDLabel = new JLabel("IDK");
 
         JPanel panel = new JPanel();
         GridBagLayout gb = new GridBagLayout();
@@ -38,32 +39,28 @@ public class ReportTableView {
         panel.setLayout(gb);
         // adding the labels
         c.gridwidth = GridBagConstraints.RELATIVE;
-		gb.setConstraints(tableALabel, c);
+        gb.setConstraints(tableALabel, c);
         panel.add(tableALabel);
         c.gridwidth = GridBagConstraints.REMAINDER;
-		gb.setConstraints(tableBLabel, c);
+        gb.setConstraints(tableBLabel, c);
         panel.add(tableBLabel);
         // adding the table
         c.gridwidth = GridBagConstraints.RELATIVE;
-		gb.setConstraints(scrollerA, c);
+        gb.setConstraints(scrollerA, c);
         panel.add(scrollerA);
         c.gridwidth = GridBagConstraints.REMAINDER;
-		gb.setConstraints(scrollerB, c);
+        gb.setConstraints(scrollerB, c);
         panel.add(scrollerB);
         // adding the labels
         c.gridwidth = GridBagConstraints.RELATIVE;
-		gb.setConstraints(tableCLabel, c);
+        gb.setConstraints(tableCLabel, c);
         panel.add(tableCLabel);
         c.gridwidth = GridBagConstraints.REMAINDER;
-		gb.setConstraints(tableDLabel, c);
-        panel.add(tableDLabel);
         // adding the table
         c.gridwidth = GridBagConstraints.RELATIVE;
-		gb.setConstraints(scrollerC, c);
+        gb.setConstraints(scrollerC, c);
         panel.add(scrollerC);
         c.gridwidth = GridBagConstraints.REMAINDER;
-		gb.setConstraints(scrollerD, c);
-        panel.add(scrollerD);
 
         JFrame frame = new JFrame();
         frame.getContentPane().add(panel);
