@@ -19,9 +19,9 @@ public class ReturnReceiptView {
         "Reservation Confirmation Number: " + rentReturnmodel.getRid() + "\n\n" +
         "Date of return: " + rentReturnmodel.getReturnDate() + "\n\n" +
         "Odometer: " + rentReturnmodel.getOdometer() + "\n\n" +
-        "Full Tank: " + rentReturnmodel.isFullTank() + "\n\n" +
+        "Full Tank: " + rentReturnmodel.isFulltank() + "\n\n" +
         "Your Total is: \n\n" +
-        "Rate: "rentReturnmodel.getRate() + " X " + "Duration: " + rentReturnmodel.getDuration() + " = rentReturnmodel.getValue()"
+        "Rate: " + rentReturnmodel.getRate() + " X " + "Duration: " + rentReturnmodel.getDuration() + " = rentReturnmodel.getValue()"
     );
     textPane.setEnabled(false);
     textPane.setDisabledTextColor(Color.BLACK);

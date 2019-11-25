@@ -842,16 +842,17 @@ public class DatabaseConnectionHandler {
         if (vm == null) {
             throw new Exception("No available vehicles found ");
         }
-        String str = "INSERT INTO rental VALUES (?,?,?,?,?,?,?,?)";
+        String str = "INSERT INTO Rental (vlicense, dlicense, confNo, fromDate, toDate, odometer, cardName, cardNo, expDate) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = connection.prepareStatement(str);
         ps.setInt(1, vm.getVlicense());
         ps.setInt(2, dlicense);
         ps.setNull(3, java.sql.Types.INTEGER);
         ps.setDate(4, startDate);
         ps.setDate(5, endDate);
-        ps.setString(6, cardName);
-        ps.setInt(7, cardNo);
-        ps.setDate(8, expDate);
+        ps.setInt(6, vm.getOdometer());
+        ps.setString(7, cardName);
+        ps.setInt(8, cardNo);
+        ps.setDate(9, expDate);
 
         ps.executeUpdate();
         connection.commit();
