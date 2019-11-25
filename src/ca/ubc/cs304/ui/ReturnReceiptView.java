@@ -8,22 +8,20 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import ca.ubc.cs304.model.RentReturnModel;
-import ca.ubc.cs304.model.RentalModel;
 
 public class ReturnReceiptView {
 
- public ReturnReceiptView() {
+ public ReturnReceiptView(RentReturnModel rentReturnmodel) {
     JFrame parent = new JFrame();
     final JDialog dialog = new JDialog(parent,"TRANSACTION RECEIPT");
     JTextPane textPane = new JTextPane();
     textPane.setText(   
-        "Reservation Confirmation Number: " + "rentModel.getConfNo()" + "\n\n" +
-        "Date of return: " + "rentReturnmodel.getReturnDate()" + "\n\n" +
-        "Time of return: " + "rentReturnmodel.getReturnTime()" + "\n\n" +
-        "Odometer: " + "rentReturnmodel.getOdometer()" + "\n\n" +
-        "Full Tank: " + "rentReturnmodel.isFullTank()" + "\n\n" +
+        "Reservation Confirmation Number: " + rentReturnmodel.getRid() + "\n\n" +
+        "Date of return: " + rentReturnmodel.getReturnDate() + "\n\n" +
+        "Odometer: " + rentReturnmodel.getOdometer() + "\n\n" +
+        "Full Tank: " + rentReturnmodel.isFullTank() + "\n\n" +
         "Your Total is: \n\n" +
-        "DAYRATE" + "X" + "NUMBER OF DAYS = " + "rentReturnmodel.getValue()"
+        "Rate: "rentReturnmodel.getRate() + " X " + "Duration: " + rentReturnmodel.getDuration() + " = rentReturnmodel.getValue()"
     );
     textPane.setEnabled(false);
     textPane.setDisabledTextColor(Color.BLACK);

@@ -193,8 +193,9 @@ public class UiTransactions extends JFrame implements ActionListener {
                         this.datePickers.get(7).getJFormattedTextField().getText());
                 new RentReceiptView(m);
 			} else if (command == "ReturnVehicle") {
-				RentReturnModel m = delegate.processReturn(Integer.parseInt(this.formattedTextFields.get(6).getText()), datePickers.get(8).getJFormattedTextField().getText(),
-						Integer.parseInt(this.formattedTextFields.get(7).getText()), (String) this.comboBoxs.get(3).getSelectedItem());
+				RentReturnModel m = delegate.processReturn(Integer.parseInt(this.formattedTextFields.get(6).getText().replaceAll(",", "")), datePickers.get(8).getJFormattedTextField().getText(),
+                        Integer.parseInt(this.formattedTextFields.get(7).getText().replaceAll(",", "")), (String) this.comboBoxs.get(3).getSelectedItem());
+                new ReturnReceiptView(m);
 			} else if (command == "ReportRentals") {
             	String text = this.textFields.get(3).getText();
 				if (text == "") {
