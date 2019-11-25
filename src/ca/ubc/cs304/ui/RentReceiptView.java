@@ -15,16 +15,17 @@ public class RentReceiptView {
     JFrame parent = new JFrame();
     final JDialog dialog = new JDialog(parent,"TRANSACTION RECEIPT");
     JTextPane textPane = new JTextPane();
+    String confNoText = (rentModel.getConfNo() == -1) ? "N/A" : Integer.toString(rentModel.getConfNo());
     textPane.setText(   
         "Reservation Confirmation Number: " + rentModel.getRid() + "\n\n" +
         "Vehicle ID: " + rentModel.getVlicense() + "\n\n" +
         "Drivers License: " + rentModel.getDlicense() + "\n\n" +
-        "Cell Phone: " + rentModel.getConfNo() + "\n\n" +
+        "Confirmation Number: " + confNoText + "\n\n" +
         "From Date: " + rentModel.getFromDate() + " To Date: " + rentModel.getToDate() + "\n\n" +
         "Odometer: " + rentModel.getOdometer() + "\n\n" +
         "Card Name: " + rentModel.getCardName() + "\n\n" +
         "Card Number: " + rentModel.getCardNo() + "\n\n" +
-        "Exipry Date: " + rentModel.getExpDate() + "\n\n"
+        "Card Expiry Date: " + rentModel.getExpDate() + "\n\n"
     );
     textPane.setEnabled(false);
     textPane.setDisabledTextColor(Color.BLACK);

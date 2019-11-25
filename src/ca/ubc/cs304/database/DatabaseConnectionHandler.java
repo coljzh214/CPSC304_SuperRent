@@ -777,8 +777,10 @@ public class DatabaseConnectionHandler {
         ps.setInt(1, confNo);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            r = new ReservationModel(rs.getInt("confNo"), rs.getString("vtname"),
-                    rs.getInt("phonenumber"), rs.getDate("fromDate"),
+            r = new ReservationModel(rs.getInt("confNo"),
+                    rs.getString("vtname"),
+                    rs.getInt("dlicense"),
+                    rs.getDate("fromDate"),
                     rs.getDate("toDate"));
         }
         ps.executeUpdate();
@@ -798,7 +800,7 @@ public class DatabaseConnectionHandler {
 			throw new Exception("No vehicle with given vehicle type is available.");
 		}
 
-        String str = "INSERT INTO rental VALUES (?,?,?,?,?,?,?,?,?)";
+        String str = "INSERT INTO Rental (vlicense, dlicense, confNo, fromDate, toDate, odometer, cardName, cardNo, expDate) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = connection.prepareStatement(str);
         ps.setInt(1, vm.getVlicense());
         ps.setInt(2, rm.getDlicense());
