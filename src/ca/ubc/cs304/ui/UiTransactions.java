@@ -186,12 +186,12 @@ public class UiTransactions extends JFrame implements ActionListener {
                 new ReserveReceiptView(res);
             } else if (command == "RentVehicle") {
             	RentalModel m = delegate.processRentalwithReservation(Integer.parseInt(this.formattedTextFields.get(2).getText().replaceAll(",", "")),
-						this.textFields.get(3).getText(), Integer.parseInt(this.formattedTextFields.get(3).getText().replaceAll(",", "")),
+						this.textFields.get(2).getText(), Integer.parseInt(this.formattedTextFields.get(3).getText().replaceAll(",", "")),
                         this.datePickers.get(4).getJFormattedTextField().getText());
                 new RentReceiptView(m);
 			} else if (command == "RentVehicle2") {
             	RentalModel m = delegate.processRentalwithoutReservation((String) this.comboBoxs.get(2).getSelectedItem(), Integer.parseInt(this.formattedTextFields.get(4).getText().replaceAll(",", "")), this.datePickers.get(5).getJFormattedTextField().getText(),
-						this.datePickers.get(6).getJFormattedTextField().getText(), this.textFields.get(4).getText(), Integer.parseInt(this.formattedTextFields.get(5).getText().replaceAll(",", "")),
+						this.datePickers.get(6).getJFormattedTextField().getText(), this.textFields.get(3).getText(), Integer.parseInt(this.formattedTextFields.get(5).getText().replaceAll(",", "")),
                         this.datePickers.get(7).getJFormattedTextField().getText());
                 new RentReceiptView(m);
 			} else if (command == "ReturnVehicle") {
