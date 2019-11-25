@@ -478,10 +478,10 @@ public class DatabaseConnectionHandler {
         String sqlQuery = "SELECT DISTINCT v.* FROM Vehicle v, VehicleType vt" +
                 " WHERE v.vtname = vt.vtname ";
         if (location.length() > 0) {
-            sqlQuery += " AND v.location = '" + location + "'";
+            sqlQuery += " AND v.status = 'available' AND v.location = '" + location + "'";
         }
         if (vType.length() > 0) {
-            sqlQuery += " AND vt.vtname = '" + vType + "'";
+            sqlQuery += " AND v.status = 'available' AND vt.vtname = '" + vType + "'";
         }
 
         if (startDate != null && endDate != null) {
