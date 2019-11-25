@@ -23,10 +23,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.JOptionPane;
 
-import ca.ubc.cs304.model.BranchReportModel;
-import ca.ubc.cs304.model.RentReturnModel;
-import ca.ubc.cs304.model.RentalModel;
-import ca.ubc.cs304.model.ReportModel;
+import ca.ubc.cs304.model.*;
 import org.jdatepicker.impl.*;
 
 import java.util.ArrayList;
@@ -74,11 +71,8 @@ public class UiTransactions extends JFrame implements ActionListener {
 		this.addComboBox(tab2, " Vehicle Type: ", vehicleType, gb2, c2);
 		this.addFormattedField(tab2, " Driver License: ", gb2, c2);
 		this.addFormattedField(tab2, " Phone Number : ", gb2, c2);
-		this.addField(tab2, " confNo: ", gb2, c2);
-		this.addField(tab2, " vtname: ", gb2, c2);
 		this.addField(tab2, " dlicense: ", gb2, c2);
 		this.addField(tab2, " location: ", gb2, c2);
-		this.addTimeSpinner(tab2, gb2, c2);
 		this.addLabels(tab2,"From Date:", "To Date:", gb2, c2);
 		this.addDatePicker(tab2, gb2, c2);
 		this.addSubmitButton(tab2, gb2, c2, "ReserveVehicle");
@@ -186,7 +180,11 @@ public class UiTransactions extends JFrame implements ActionListener {
                 delegate.vehicleQuery((String) this.comboBoxs.get(0).getSelectedItem(), this.textFields.get(0).getText(), 
 				this.datePickers.get(0).getJFormattedTextField().getText(), this.datePickers.get(1).getJFormattedTextField().getText());
             } else if (command == "ReserveVehicle") {
-				JOptionPane.showMessageDialog(null, (String) this.comboBoxs.get(0).getSelectedItem(), "Error Message", JOptionPane.INFORMATION_MESSAGE);
+				ReservationModel res = delegate.processReservation((String)this.comboBoxs.get(1).getSelectedItem(), Integer.parseInt(this.formattedTextFields.get(0).getText()),
+						this.datePickers.get(2).getJFormattedTextField().getText(), this.datePickers.get(3).getJFormattedTextField().getText(), Integer.parseInt(this.formattedTextFields.get(1).getText()),
+						this.textFields.get(2).getText());
+
+				JOptionPane.showMessageDialog(null, delegate.getConfirmationString(res, this.textFields.get(2).getText()), "Reservation Info", JOptionPane.INFORMATION_MESSAGE);
             } else if (command == "RentVehicle") {
             	RentalModel m = delegate.processRentalwithReservation(Integer.parseInt(this.formattedTextFields.get(2).getText()),
 						this.textFields.get(1).getText(), Integer.parseInt(this.formattedTextFields.get(3).getText()),

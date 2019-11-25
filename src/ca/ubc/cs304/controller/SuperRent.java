@@ -8,8 +8,11 @@ import ca.ubc.cs304.model.*;
 import ca.ubc.cs304.ui.LoginWindow;
 import ca.ubc.cs304.ui.TerminalTransactions;
 import ca.ubc.cs304.ui.UiTransactions;
+import sun.java2d.pipe.SpanShapeRenderer;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -114,6 +117,25 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
     	System.exit(0);
     }
 
+	public String getConfirmationString(ReservationModel res, String location) throws Exception {
+    	String ret = "";
+		ret += "Confirmation Number: " + res.getConfNo() + "\n";
+		ret += "Location: " + location + "\n";
+		ret += "Vehicle Type: " + res.getVtname() + "\n";
+		ret += "Driver's license: " + res.getDlicense() + "\n";
+		CustomerModel[] cust = dbHandler.getCustomerInfo();
+		int phoneNumber = -1;
+		for (CustomerModel model : cust) {
+			if(model.getDlicense() == res.getDlicense()) {
+				phoneNumber = model.getPhonenumber();
+			}
+		}
+		ret += "Phone Number: " + phoneNumber + "\n";
+		ret += "From Date: " + res.getFromDate() + "\n";
+		ret += "to Date: " + res.getToDate() + "\n";
+		return ret;
+	}
+
     public void vehicleQuery(String carType, String location, String startDate, String endDate)  throws Exception {
 			VehicleModel[] models = dbHandler.getVehicleQuery(carType, location, startDate, endDate);
 			System.out.println();
@@ -137,8 +159,16 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 			}
 	}
 
-	public ReservationModel processReservation() {
-		return null;
+	public ReservationModel processReservation(String vtname, int dlicense, String fromDate, String toDate, int phoneNumber, String location) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date from = sdf.parse(fromDate);
+        java.util.Date to = sdf.parse(toDate);
+
+        java.sql.Date fromDateSQL = new Date(from.getTime());
+        java.sql.Date toDateSQL = new Date(to.getTime());
+        ReservationModel res = new ReservationModel(vtname, dlicense, fromDateSQL , toDateSQL, dbHandler);
+        CustomerModel customer = new CustomerModel(dlicense, "", "" , phoneNumber);
+		return dbHandler.createReservation(res, customer, location);
 	}
 
 	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {

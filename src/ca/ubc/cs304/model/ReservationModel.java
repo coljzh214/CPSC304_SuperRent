@@ -27,8 +27,8 @@ public class ReservationModel extends IModel{
         table_name = "Reservation";
     }
 
-    public ReservationModel(String vtname, int dlicense, Date fromDate, Date toDate) {
-        this.confNo = getNewConfNo();
+    public ReservationModel(String vtname, int dlicense, Date fromDate, Date toDate, DatabaseConnectionHandler dbh) {
+        this.confNo = getNewConfNo(dbh);
         this.vtname = vtname;
         this.dlicense = dlicense;
         this.fromDate = fromDate;
@@ -36,8 +36,7 @@ public class ReservationModel extends IModel{
         table_name = "Reservation";
     }
 
-    private int getNewConfNo() {
-        DatabaseConnectionHandler dbh = new DatabaseConnectionHandler();
+    private int getNewConfNo(DatabaseConnectionHandler dbh) {
         return dbh.getNewConfNo();
     }
 

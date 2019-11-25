@@ -79,7 +79,7 @@ public class DatabaseConnectionHandler {
     public int getNewConfNo() {
         try{
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select res_seq.currval as val from dual");
+            ResultSet rs = stmt.executeQuery("select res_seq.nextval as val from dual");
             int ret;
 
             // display column names;
@@ -575,7 +575,7 @@ public class DatabaseConnectionHandler {
         PreparedStatement ps = connection.prepareStatement("INSERT INTO Reservation VALUES (?,?,?,?,?)");
         ps.setInt(1, model.getConfNo());
         ps.setString(2, model.getVtname());
-        // ps.setInt(3, model.getPhonenumber());
+        ps.setInt(3, model.getDlicense());
         ps.setDate(4, model.getFromDate());
         ps.setDate(5, model.getToDate());
 
@@ -763,12 +763,12 @@ public class DatabaseConnectionHandler {
         return;
     }
 
-    public ReservationModel createReservation(ReservationModel res, CustomerModel Customer) throws Exception, SQLException {
+    public ReservationModel createReservation(ReservationModel res, CustomerModel Customer, String location) throws Exception, SQLException {
         Statement stmt = connection.createStatement();
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM Customer WHERE dlicense = ?");
         ps.setInt(1, Customer.getDlicense());
 
-        VehicleModel[] availablevehicles = getVehicleQuery(res.getVtname(), "", res.getFromDate().toString(), res.getToDate().toString());
+        VehicleModel[] availablevehicles = getVehicleQuery(res.getVtname(), location, res.getFromDate().toString(), res.getToDate().toString());
         if (availablevehicles.length <= 0) {
             throw new Exception("There are no vehicles of that type available");
         }
