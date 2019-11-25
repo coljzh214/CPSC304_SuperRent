@@ -97,11 +97,11 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
         for (int i = 0; i < models.length; i++) {
             BranchModel model = models[i];
 
-    		// simplified output formatting; truncation may occur
-    		System.out.printf("%-10.10s", model.getLocation());
-    		System.out.printf("%-20.20s", model.getCity());
-    		System.out.println();
-    	}
+            // simplified output formatting; truncation may occur
+            System.out.printf("%-10.10s", model.getLocation());
+            System.out.printf("%-20.20s", model.getCity());
+            System.out.println();
+        }
     }
 
     /**
@@ -153,50 +153,50 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
         return dbHandler.createReservation(res, customer, location);
     }
 
-	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {
-    	return dbHandler.processRentalWithReservation(confNo, cardName, cardNo, expDateString);
-	}
+    public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception {
+        return dbHandler.processRentalWithReservation(confNo, cardName, cardNo, expDateString);
+    }
 
-	public RentalModel processRentalwithoutReservation(String vtname, int dlicense, String fromDateString, String toDateString,
-													   String cardName, int cardNo, String expDateString) throws Exception {
-		return dbHandler.processRentalWithoutReservation(vtname, dlicense, fromDateString, toDateString, cardName, cardNo, expDateString);
-	}
+    public RentalModel processRentalwithoutReservation(String vtname, int dlicense, String fromDateString, String toDateString,
+                                                       String cardName, int cardNo, String expDateString) throws Exception {
+        return dbHandler.processRentalWithoutReservation(vtname, dlicense, fromDateString, toDateString, cardName, cardNo, expDateString);
+    }
 
-	public RentReturnModel processReturn(int rid, String returnDateString, int odometer, String fullTank) throws Exception {
-    	return dbHandler.processReturn(rid, returnDateString, odometer, fullTank);
+    public RentReturnModel processReturn(int rid, String returnDateString, int odometer, String fullTank) throws Exception {
+        return dbHandler.processReturn(rid, returnDateString, odometer, fullTank);
     }
 
     public ReportModel generateRentalReport() throws SQLException {
-    	return dbHandler.generateRentalReport();
-	}
+        return dbHandler.generateRentalReport();
+    }
 
-	public BranchReportModel generateRentalReport(String location, String city) throws SQLException {
-    	return dbHandler.generateRentalReport(location, city);
-	}
+    public BranchReportModel generateRentalReport(String location, String city) throws SQLException {
+        return dbHandler.generateRentalReport(location, city);
+    }
 
-	public ReportModel generateReturnReport() throws SQLException {
-		return dbHandler.generateReturnReport();
-	}
+    public ReportModel generateReturnReport() throws SQLException {
+        return dbHandler.generateReturnReport();
+    }
 
-	public BranchReportModel generateReturnReport(String location, String city) throws SQLException {
-		return dbHandler.generateReturnReport(location, city);
-	}
+    public BranchReportModel generateReturnReport(String location, String city) throws SQLException {
+        return dbHandler.generateReturnReport(location, city);
+    }
 
-	public String[] getBranches() {
-    	try {
-			ArrayList<String> result = new ArrayList<String>();
-			result.add("");
-			BranchModel[] models = dbHandler.getBranchInfo();
-			for (BranchModel m: models) {
-				result.add(m.getLocation() + "-" + m.getCity());
-			}
-			return result.toArray(new String[result.size()]);
-		} catch (SQLException e) {
-			ArrayList<String> result = new ArrayList<String>();
-			result.add("");
-    		return result.toArray(new String[result.size()]);
-		}
-	}
+    public String[] getBranches() {
+        try {
+            ArrayList<String> result = new ArrayList<String>();
+            result.add("");
+            BranchModel[] models = dbHandler.getBranchInfo();
+            for (BranchModel m : models) {
+                result.add(m.getLocation() + "-" + m.getCity());
+            }
+            return result.toArray(new String[result.size()]);
+        } catch (SQLException e) {
+            ArrayList<String> result = new ArrayList<String>();
+            result.add("");
+            return result.toArray(new String[result.size()]);
+        }
+    }
 
     /**
      * transaction returns vehicleTypes

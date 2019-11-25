@@ -488,9 +488,9 @@ public class DatabaseConnectionHandler {
                 throw new IllegalArgumentException("StartDate must be less than endDate");
             }
             sqlQuery += " AND NOT EXISTS  (SELECT * FROM Rental ren WHERE " +
-                    " v.vlicense = ren.vlicense AND (to_date('" + startDate + "'), to_date('" + endDate + "')) OVERLAPS (ren.fromDate, ren.toDate))";
+                    " v.vlicense = ren.vlicense AND (to_date('" + startDate + "', 'YYYY-MM-DD'), to_date('" + endDate + "', 'YYYY-MM-DD')) OVERLAPS (ren.fromDate, ren.toDate))";
             sqlQuery += " AND NOT EXISTS  (SELECT * FROM Rental ren, Reservation res WHERE " +
-                    " v.vlicense = ren.vlicense AND ren.confNo = ren.confNo AND (to_date('" + startDate + "'), to_date('" + endDate + "')) OVERLAPS (res.fromDate, res.toDate))";
+                    " v.vlicense = ren.vlicense AND ren.confNo = res.confNo AND (to_date('" + startDate + "', 'YYYY-MM-DD'), to_date('" + endDate + "', 'YYYY-MM-DD')) OVERLAPS (res.fromDate, res.toDate))";
         }
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
