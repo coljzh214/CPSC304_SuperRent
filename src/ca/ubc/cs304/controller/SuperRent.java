@@ -136,27 +136,8 @@ public class SuperRent implements LoginWindowDelegate, UiTransactionsDelegate {
 		return ret;
 	}
 
-    public void vehicleQuery(String carType, String location, String startDate, String endDate)  throws Exception {
-			VehicleModel[] models = dbHandler.getVehicleQuery(carType, location, startDate, endDate);
-			System.out.println();
-			for (int i = 0; i < models.length; i++) {
-				VehicleModel model = models[i];
-
-				// simplified output formatting; truncation may occur
-				System.out.printf("%-10.10s", model.getVlicense());
-				System.out.printf("%-20.20s", model.getVid());
-				if (model.getMake() == null) {
-					System.out.printf("%-20.20s", " ");
-				} else {
-					System.out.printf("%-20.20s", model.getMake());
-				}
-				System.out.printf("%-15.15s", model.getCity());
-				if (model.getMake() == null) {
-					System.out.printf("%-15.15s", " ");
-				} else {
-					System.out.printf("%-15.15s", model.getMake());
-				}
-			}
+    public VehicleModel[] vehicleQuery(String carType, String location, String startDate, String endDate)  throws Exception {
+			return dbHandler.getVehicleQuery(carType, location, startDate, endDate);
 	}
 
 	public ReservationModel processReservation(String vtname, int dlicense, String fromDate, String toDate, int phoneNumber, String location) throws Exception {

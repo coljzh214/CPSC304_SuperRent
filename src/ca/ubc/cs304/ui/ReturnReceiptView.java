@@ -16,12 +16,12 @@ public class ReturnReceiptView {
     final JDialog dialog = new JDialog(parent,"TRANSACTION RECEIPT");
     JTextPane textPane = new JTextPane();
     textPane.setText(   
-        "Reservation Confirmation Number: " + rentReturnmodel.getRid() + "\n\n" +
+        "Rental ID: " + rentReturnmodel.getRid() + "\n\n" +
         "Date of return: " + rentReturnmodel.getReturnDate() + "\n\n" +
         "Odometer: " + rentReturnmodel.getOdometer() + "\n\n" +
-        "Full Tank: " + rentReturnmodel.isFulltank() + "\n\n" +
-        "Your Total is: \n\n" +
-        "Rate: " + rentReturnmodel.getRate() + " X " + "Duration: " + rentReturnmodel.getDuration() + " = rentReturnmodel.getValue()"
+        "Your Daily Rate is: " + rentReturnmodel.getRate() + "\n\n" + 
+        "Your Duration is: " + rentReturnmodel.getDuration() + "\n\n" +
+        "Your Total is: " + rentReturnmodel.getRate() + " X " + rentReturnmodel.getDuration() + " = " + rentReturnmodel.getValue()
     );
     textPane.setEnabled(false);
     textPane.setDisabledTextColor(Color.BLACK);

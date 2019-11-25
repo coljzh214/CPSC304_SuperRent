@@ -22,7 +22,7 @@ public interface UiTransactionsDelegate {
 	public String getConfirmationString(ReservationModel res, String location) throws Exception;
     // public void updateBranch(int branchId, String name);
 	public ReservationModel processReservation(String vtname, int dlicense, String fromDate, String toDate, int phoneNumber, String location) throws Exception;
-    public void vehicleQuery(String carType, String location, String startDate, String endDate) throws Exception;
+    public VehicleModel[] vehicleQuery(String carType, String location, String startDate, String endDate) throws Exception;
 	public RentalModel processRentalwithReservation(int confNo, String cardName, int cardNo, String expDateString) throws Exception;
 	public RentalModel processRentalwithoutReservation(String vtname, int dlicense, String fromDateString, String toDateString,
 														   String cardName, int cardNo, String expDateString) throws Exception;

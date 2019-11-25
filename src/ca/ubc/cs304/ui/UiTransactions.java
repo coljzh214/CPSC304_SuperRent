@@ -71,7 +71,6 @@ public class UiTransactions extends JFrame implements ActionListener {
 		this.addComboBox(tab2, " Vehicle Type: ", vehicleType, gb2, c2);
 		this.addFormattedField(tab2, " Driver License: ", gb2, c2);
 		this.addFormattedField(tab2, " Phone Number : ", gb2, c2);
-		this.addField(tab2, " dlicense: ", gb2, c2);
 		this.addField(tab2, " location: ", gb2, c2);
 		this.addLabels(tab2,"From Date:", "To Date:", gb2, c2);
 		this.addDatePicker(tab2, gb2, c2);
@@ -177,22 +176,22 @@ public class UiTransactions extends JFrame implements ActionListener {
         try {
 			String command = e.getActionCommand();
             if (command == "ViewVehicle") {
-                delegate.vehicleQuery((String) this.comboBoxs.get(0).getSelectedItem(), this.textFields.get(0).getText(), 
-				this.datePickers.get(0).getJFormattedTextField().getText(), this.datePickers.get(1).getJFormattedTextField().getText());
+                VehicleModel[] m = delegate.vehicleQuery((String) this.comboBoxs.get(0).getSelectedItem(), this.textFields.get(0).getText(), 
+                this.datePickers.get(0).getJFormattedTextField().getText(), this.datePickers.get(1).getJFormattedTextField().getText());
+                new TableView(m);
             } else if (command == "ReserveVehicle") {
-				ReservationModel res = delegate.processReservation((String)this.comboBoxs.get(1).getSelectedItem(), Integer.parseInt(this.formattedTextFields.get(0).getText()),
-						this.datePickers.get(2).getJFormattedTextField().getText(), this.datePickers.get(3).getJFormattedTextField().getText(), Integer.parseInt(this.formattedTextFields.get(1).getText()),
-						this.textFields.get(2).getText());
-
-				JOptionPane.showMessageDialog(null, delegate.getConfirmationString(res, this.textFields.get(2).getText()), "Reservation Info", JOptionPane.INFORMATION_MESSAGE);
+				ReservationModel res = delegate.processReservation((String)this.comboBoxs.get(1).getSelectedItem(), Integer.parseInt(this.formattedTextFields.get(0).getText().replaceAll(",", "")),
+						this.datePickers.get(2).getJFormattedTextField().getText(), this.datePickers.get(3).getJFormattedTextField().getText(), Integer.parseInt(this.formattedTextFields.get(1).getText().replaceAll(",", "")),
+                        this.textFields.get(1).getText());
+                new ReserveReceiptView(res);
             } else if (command == "RentVehicle") {
             	RentalModel m = delegate.processRentalwithReservation(Integer.parseInt(this.formattedTextFields.get(2).getText().replaceAll(",", "")),
-						this.textFields.get(1).getText(), Integer.parseInt(this.formattedTextFields.get(3).getText().replaceAll(",", "")),
+						this.textFields.get(3).getText(), Integer.parseInt(this.formattedTextFields.get(3).getText().replaceAll(",", "")),
                         this.datePickers.get(4).getJFormattedTextField().getText());
                 new RentReceiptView(m);
 			} else if (command == "RentVehicle2") {
             	RentalModel m = delegate.processRentalwithoutReservation((String) this.comboBoxs.get(2).getSelectedItem(), Integer.parseInt(this.formattedTextFields.get(4).getText().replaceAll(",", "")), this.datePickers.get(5).getJFormattedTextField().getText(),
-						this.datePickers.get(6).getJFormattedTextField().getText(), this.textFields.get(2).getText(), Integer.parseInt(this.formattedTextFields.get(5).getText().replaceAll(",", "")),
+						this.datePickers.get(6).getJFormattedTextField().getText(), this.textFields.get(4).getText(), Integer.parseInt(this.formattedTextFields.get(5).getText().replaceAll(",", "")),
                         this.datePickers.get(7).getJFormattedTextField().getText());
                 new RentReceiptView(m);
 			} else if (command == "ReturnVehicle") {

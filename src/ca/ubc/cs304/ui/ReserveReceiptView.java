@@ -7,25 +7,19 @@ import javax.swing.text.StyledDocument;
 
 import java.awt.*;
 import java.awt.event.*;
-import ca.ubc.cs304.model.RentalModel;
+import ca.ubc.cs304.model.ReservationModel;
 
-public class RentReceiptView {
+public class ReserveReceiptView {
 
- public RentReceiptView(RentalModel rentModel) {
+ public ReserveReceiptView(ReservationModel reserveModel) {
     JFrame parent = new JFrame();
-    final JDialog dialog = new JDialog(parent,"TRANSACTION RECEIPT");
+    final JDialog dialog = new JDialog(parent,"Reservation Receipt");
     JTextPane textPane = new JTextPane();
-    String confNoText = (rentModel.getConfNo() == -1) ? "N/A" : Integer.toString(rentModel.getConfNo());
     textPane.setText(   
-        "Rental ID: " + rentModel.getRid() + "\n\n" +
-        "Vehicle ID: " + rentModel.getVlicense() + "\n\n" +
-        "Drivers License: " + rentModel.getDlicense() + "\n\n" +
-        "Confirmation Number: " + confNoText + "\n\n" +
-        "From Date: " + rentModel.getFromDate() + " To Date: " + rentModel.getToDate() + "\n\n" +
-        "Odometer: " + rentModel.getOdometer() + "\n\n" +
-        "Card Name: " + rentModel.getCardName() + "\n\n" +
-        "Card Number: " + rentModel.getCardNo() + "\n\n" +
-        "Card Expiry Date: " + rentModel.getExpDate() + "\n\n"
+        "Reservation Confirmation Number: " + reserveModel.getConfNo() + "\n\n" +
+        "Vehicle Type: " + reserveModel.getVtname() + "\n\n" +
+        "Drivers License: " + reserveModel.getDlicense() + "\n\n" +
+        "From Date: " + reserveModel.getFromDate() + " To Date: " + reserveModel.getToDate() + "\n\n"
     );
     textPane.setEnabled(false);
     textPane.setDisabledTextColor(Color.BLACK);
