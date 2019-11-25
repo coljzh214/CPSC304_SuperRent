@@ -14,10 +14,9 @@ import ca.ubc.cs304.model.ReportModel;
 public class ReportTableView {
 
     static JScrollPane createTable(List list, String[] columnNames) {
-        Object[][] array = new String[list.size()][];
+        Object[][] array = new Object[list.size()][columnNames.length];
         for (int i = 0; i < list.size(); i++) {
-            ArrayList<Object> row = (ArrayList<Object>) list.get(i);
-            array[i] = row.toArray(new String[row.size()]);
+            array[i] = (Object[]) list.get(i);
         }
         JTable table = new JTable(array, columnNames);
         return new JScrollPane(table);
