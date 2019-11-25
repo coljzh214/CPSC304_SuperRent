@@ -215,21 +215,21 @@ public class UiTransactions extends JFrame implements ActionListener {
             	String text = this.comboBoxs.get(4).getSelectedItem().toString();
 				if (text == "") {
 					ReportModel m = delegate.generateRentalReport();
-					new ReportTableView(m, REPORT_COLUMN_NAMES);
+					new ReportTableView(m, REPORT_COLUMN_NAMES, "Rental");
 				} else {
 					String[] branchInfo = text.split("-");
 					BranchReportModel m = delegate.generateRentalReport(branchInfo[0], branchInfo[1]);
-					new BranchReportTableView(m, REPORT_BRANCH_COLUMN_NAMES);
+					new BranchReportTableView(m, REPORT_BRANCH_COLUMN_NAMES, "Rental");
 				}
 			} else if (command == "ReportReturns") {
 				String text = this.comboBoxs.get(5).getSelectedItem().toString();
 				if (text == "") {
 					ReportModel m = delegate.generateReturnReport();
-					new ReportTableView(m, RETURN_COLUMN_NAMES);
+					new ReportTableView(m, RETURN_COLUMN_NAMES, "Return");
 				} else {
 					String[] branchInfo = text.split("-");
 					BranchReportModel m = delegate.generateReturnReport(branchInfo[0], branchInfo[1]);
-					new BranchReportTableView(m, RETURN_BRANCH_COLUMN_NAMES);
+					new BranchReportTableView(m, RETURN_BRANCH_COLUMN_NAMES, "Return");
 				}
 			}
         }

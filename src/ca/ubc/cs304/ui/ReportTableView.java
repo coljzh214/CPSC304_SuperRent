@@ -22,15 +22,26 @@ public class ReportTableView {
         return new JScrollPane(table);
     }
 
-    public ReportTableView(ReportModel reportModel, String[][] columnNames) {
+    public ReportTableView(ReportModel reportModel, String[][] columnNames, String type) {
         JScrollPane scrollerA = createTable(reportModel.a, columnNames[0]);
         JScrollPane scrollerB = createTable(reportModel.b, columnNames[1]);
         JScrollPane scrollerC = createTable(reportModel.c, columnNames[2]);
         JScrollPane scrollerD = createTable(reportModel.d, columnNames[3]);
-        JLabel tableALabel = new JLabel("IDK");
-        JLabel tableBLabel = new JLabel("IDK");
-        JLabel tableCLabel = new JLabel("IDK");
-        JLabel tableDLabel = new JLabel("IDK");
+        JLabel tableALabel;
+        JLabel tableBLabel;
+        JLabel tableCLabel;
+        JLabel tableDLabel;
+        if (type == "Rental") {
+            tableALabel = new JLabel("Today's Vehicle Rentals");
+            tableBLabel = new JLabel("Total of Today's Vehicle Rentals by Vehicle Type");
+            tableCLabel = new JLabel("Total of Today's Vehicle Rentals by Branch");
+            tableDLabel = new JLabel("Total number of Today's Vehicle Rentals");
+        } else {
+            tableALabel = new JLabel("Today's Vehicle Returns");
+            tableBLabel = new JLabel("Total of Today's Vehicle Returns by Vehicle Type");
+            tableCLabel = new JLabel("Total of Today's Vehicle Returns by Branch");
+            tableDLabel = new JLabel("Total number of Today's Vehicle Returns");
+        }
 
         JPanel panel = new JPanel();
         GridBagLayout gb = new GridBagLayout();
